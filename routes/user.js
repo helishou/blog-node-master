@@ -1,8 +1,11 @@
 /*
- * @Author: helishou 
- * @Date: 2021-05-31 10:33:29 
- * @Last Modified by: helishou
- * @Last Modified time: 2021-05-31 14:54:23
+ * @Author       : helishou
+ * @Date         : 2021-06-02 18:59:20
+ * @LastEditTime : 2021-06-03 11:14:48
+ * @LastEditors  : helishou
+ * @Description  : 用户相关接口
+ * @FilePath     : d:\desk\sakura\express\routes\user.js
+ * 你用你的指尖,阻止我说再见,在bug完全失去之前
  */
 const fetch = require("node-fetch");
 const CONFIG = require("../app.config.js");
@@ -215,7 +218,7 @@ exports.register = (req, res) => {
     email: "479525390@qq.com",
     phone: 15659825289,
     type: 0,
-    introduce: "加班到天明，学习到昏厥!!!",
+    introduce: "你用你的指尖,阻止我说再见,在bug完全失去之前",
   };
   if (!email) {
     responseClient(res, 400, 2, "用户邮箱不可为空");
