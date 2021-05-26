@@ -133,6 +133,7 @@ exports.getArticleList = (req, res) => {
   let keyword = req.query.keyword || null;
   let state = req.query.state || '';
   let likes = req.query.likes || '';
+  let origin = req.query.origin || null;
   let tag_id = req.query.tag_id || '';
   let category_id = req.query.category_id || '';
   let article = req.query.article || '';
@@ -190,6 +191,7 @@ exports.getArticleList = (req, res) => {
         category: 1,
         meta: 1,
         create_time: 1,
+        origin:1,
       };
       if(article){
         fields = {
@@ -236,7 +238,18 @@ exports.getArticleList = (req, res) => {
             let len = newList.length;
             responseData.count = len;
             responseData.list = newList;
-          } else if (article) {
+          } else if (origin!==null) {
+            // console.log('tag_id :', tag_id);
+            // 根据标签 id 返回数据
+            result.forEach(item => {
+              if (item.origin==origin) {
+                newList.push(item);
+              }
+            });
+            let len = newList.length;
+            responseData.count = len;
+            responseData.list = newList;
+            }else if (article) {
             const archiveList = []
             let obj = {}
             // 按年份归档 文章数组

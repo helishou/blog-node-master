@@ -10,7 +10,7 @@ const link = require('./link');
 const category = require('./category');
 const timeAxis = require('./timeAxis');
 const project = require('./project');
-
+// const head = require('./header')
 module.exports = app => {
 	app.post('/login', user.login);
 	app.post('/logout', user.logout);
@@ -20,7 +20,9 @@ module.exports = app => {
 	app.post('/getUser', user.getUser);
 	app.get('/currentUser', user.currentUser);
 	app.get('/getUserList', user.getUserList);
-
+	
+    // app.post('/menu/front/v1/list', user.login);
+    
 	app.post('/addComment', comment.addComment);
 	app.post('/addThirdComment', comment.addThirdComment);
 	app.post('/changeComment', comment.changeComment);

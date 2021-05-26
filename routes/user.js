@@ -6,6 +6,7 @@ import { MD5_SUFFIX, responseClient, md5 } from '../util/util.js';
 
 // 第三方授权登录的用户信息
 exports.getUser = (req, res) => {
+ console.log('code',req,res)
   let { code } = req.body;
   if (!code) {
     responseClient(res, 400, 2, 'code 缺失');
@@ -68,7 +69,7 @@ exports.getUser = (req, res) => {
                   //保存到数据库
                   let user = new User(obj);
                   user.save().then(data => {
-                    // console.log('data :', data);
+                    console.log('github:data :', data);
                     req.session.userInfo = data;
                     responseClient(res, 200, 0, '授权登录成功', data);
                   });
@@ -194,7 +195,15 @@ exports.loginAdmin = (req, res) => {
 };
 
 exports.register = (req, res) => {
-  let { name, password, phone, email, introduce, type } = req.body;
+  // let { name, password, phone, email, introduce, type } = req.body;
+  let { name, password, phone, email, introduce, type } = {
+    "name": "helishou",
+    "password": "86699596",
+    "email": "479525390@qq.com",
+    "phone": 15659825289,
+    "type": 0,
+    "introduce":"加班到天明，学习到昏厥!!!"
+   };
   if (!email) {
     responseClient(res, 400, 2, '用户邮箱不可为空');
     return;

@@ -76,10 +76,6 @@ exports.getCommentList = (req, res) => {
 
 // 添加一级评论
 exports.addComment = (req, res) => {
-  if (!req.session.userInfo) {
-    responseClient(res, 200, 1, '您还没登录,或者登录信息已过期，请重新登录！');
-    return;
-  }
   let { article_id, user_id, content } = req.body;
   User.findById({
     _id: user_id,
@@ -139,10 +135,6 @@ exports.addComment = (req, res) => {
 
 // 添加第三者评论
 exports.addThirdComment = (req, res) => {
-  if (!req.session.userInfo) {
-    responseClient(res, 200, 1, '您还没登录,或者登录信息已过期，请重新登录！');
-    return;
-  }
   let { article_id, comment_id, user_id, content, to_user } = req.body;
   Comment.findById({
     _id: comment_id,
@@ -171,8 +163,7 @@ exports.addThirdComment = (req, res) => {
                 other_comments: commentResult.other_comments,
                 is_handle: 2,
               },
-            )
-              .then(result => {
+            ).then(result => {
                 // responseClient(res, 200, 0, '操作成功', result);
                 Article.findOne({ _id: article_id }, (errors, data) => {
                   if (errors) {
