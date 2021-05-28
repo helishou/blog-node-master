@@ -130,21 +130,21 @@ exports.userInfo = (req, res) => {
 exports.currentUser = (req, res) => {
   let user = req.session.userInfo;
   if (user) {
-    user.avatar = 'http://p61te2jup.bkt.clouddn.com/WechatIMG8.jpeg';
+    user.avatar = 'https://avatars.githubusercontent.com/u/41136716?v=4';
     user.notifyCount = 0;
-    user.address = '广东省';
+    user.address = '浙江省';
     user.country = 'China';
-    user.group = 'BiaoChenXuying';
-    (user.title = '交互专家'), (user.signature = '海纳百川，有容乃大');
+    user.group = '包子窝';
+    (user.title = '前端萌新'), (user.signature = '海纳百川，有容乃大');
     user.tags = [];
     user.geographic = {
       province: {
-        label: '广东省',
-        key: '330000',
+        label: '浙江省',
+        key: '300000',
       },
       city: {
-        label: '广州市',
-        key: '330100',
+        label: '杭州市',
+        key: '300100',
       },
     };
     responseClient(res, 200, 0, '', user);

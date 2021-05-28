@@ -2,7 +2,7 @@
  * Mongoose module.
  * @file 数据库模块
  * @module core/mongoose
- * @author  biaochenxuying <https://github.com/biaochenxuying>
+ * @author  helishou <https://github.com/helishou>
  */
 
 const consola = require('consola')

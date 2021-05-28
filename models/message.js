@@ -2,7 +2,7 @@
  * Message model module.
  * @file 留言模型
  * @module model/message
- * @author biaochenxuying <https://github.com/biaochenxuying>
+ * @author helishou <https://github.com/helishou>
  */
 
 const { mongoose } = require('../core/mongodb.js');

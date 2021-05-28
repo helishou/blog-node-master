@@ -2,7 +2,7 @@
  * Tag model module.
  * @file 标签数据模型
  * @module model/tag
- * @author biaochenxuying <https://github.com/biaochenxuying>
+ * @author helishou <https://github.com/helishou>
  */
 
 const { mongoose } = require('../core/mongodb.js');
