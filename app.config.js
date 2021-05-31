@@ -1,8 +1,8 @@
-/**
- * App config module.
- * @file 应用运行配置
- * @module app.config
- * @author helishou <https://github.com/helishou>
+/*
+ * @Author: helishou 
+ * @Date: 2021-05-31 10:33:14 
+ * @Last Modified by:   helishou 
+ * @Last Modified time: 2021-05-31 10:33:14 
  */
 
 const path = require('path');

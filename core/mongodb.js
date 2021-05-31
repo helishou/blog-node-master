@@ -26,6 +26,7 @@ exports.connect = () => {
 
 	// 连接数据库
 	mongoose.connect(CONFIG.MONGODB.uri, {
+		// remove DeprecationWarning
 		useCreateIndex: true,
 		useNewUrlParser: true,
 		promiseLibrary: global.Promise

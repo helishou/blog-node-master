@@ -1,9 +1,15 @@
+/*
+ * @Author: helishou 
+ * @Date: 2021-05-31 14:36:37 
+ * @Last Modified by:   helishou 
+ * @Last Modified time: 2021-05-31 14:36:37 
+ */
 // modules
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+const logger = require('morgan');//HTTP request logger middleware for node.js
 const session = require('express-session');
 
 // import 等语法要用到 babel 支持
@@ -14,12 +20,15 @@ const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
+//以上代码用于配置页面文件(例如 .ejs 文件)的根目录，
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(cookieParser('blog_node_cookie'));
+//输出日志
+app.use(express.json());//解析content-type：application /json
+
+app.use(express.urlencoded({ extended: false }));//类似表单提交参数获取//可将字符串以URL编码，用于编码处理
+app.use(express.static(path.join(__dirname, 'public')));//静态文件目录
+
+app.use(cookieParser('blog_node_cookie'));//使用签名
 app.use(
 	session({
 		secret: 'blog_node_cookie',

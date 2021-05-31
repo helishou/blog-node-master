@@ -1,15 +1,21 @@
-const fetch = require('node-fetch');
-const CONFIG = require('../app.config.js');
-const User = require('../models/user');
+/*
+ * @Author: helishou 
+ * @Date: 2021-05-31 10:33:29 
+ * @Last Modified by: helishou
+ * @Last Modified time: 2021-05-31 14:54:23
+ */
+const fetch = require("node-fetch");
+const CONFIG = require("../app.config.js");
+const User = require("../models/user");
 // const OAuth = require('../models/oauth');
-import { MD5_SUFFIX, responseClient, md5 } from '../util/util.js';
+import { MD5_SUFFIX, responseClient, md5 } from "../util/util.js";
 
 // 第三方授权登录的用户信息
 exports.getUser = (req, res) => {
- console.log('code',req,res)
+  console.log("code", req, res);
   let { code } = req.body;
   if (!code) {
-    responseClient(res, 400, 2, 'code 缺失');
+    responseClient(res, 400, 2, "code 缺失");
     return;
   }
   let path = CONFIG.GITHUB.access_token_url;
@@ -20,42 +26,42 @@ exports.getUser = (req, res) => {
   };
   // console.log(code);
   fetch(path, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json', 
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(params),
   })
-    .then(res1 => {
+    .then((res1) => {
       return res1.text();
     })
-    .then(body => {
-      const args = body.split('&');
-      let arg = args[0].split('=');
+    .then((body) => {
+      const args = body.split("&");
+      let arg = args[0].split("=");
       const access_token = arg[1];
       // console.log("body:",body);
-      console.log('access_token:', access_token);
+      console.log("access_token:", access_token);
       return access_token;
     })
-    .then(async token => {
-      const url = CONFIG.GITHUB.user_url + '?access_token=' + token;
-      console.log('url:', url);
+    .then(async (token) => {
+      const url = CONFIG.GITHUB.user_url + "?access_token=" + token;
+      console.log("url:", url);
       await fetch(url)
-        .then(res2 => {
-          console.log('res2 :', res2);
+        .then((res2) => {
+          console.log("res2 :", res2);
           return res2.json();
         })
-        .then(response => {
-          console.log('response ', response);
+        .then((response) => {
+          console.log("response ", response);
           if (response.id) {
             //验证用户是否已经在数据库中
             User.findOne({ github_id: response.id })
-              .then(userInfo => {
+              .then((userInfo) => {
                 // console.log('userInfo :', userInfo);
                 if (userInfo) {
                   //登录成功后设置session
                   req.session.userInfo = userInfo;
-                  responseClient(res, 200, 0, '授权登录成功', userInfo);
+                  responseClient(res, 200, 0, "授权登录成功", userInfo);
                 } else {
                   let obj = {
                     github_id: response.id,
@@ -68,51 +74,51 @@ exports.getUser = (req, res) => {
                   };
                   //保存到数据库
                   let user = new User(obj);
-                  user.save().then(data => {
-                    console.log('github:data :', data);
+                  user.save().then((data) => {
+                    console.log("github:data :", data);
                     req.session.userInfo = data;
-                    responseClient(res, 200, 0, '授权登录成功', data);
+                    responseClient(res, 200, 0, "授权登录成功", data);
                   });
                 }
               })
-              .catch(err => {
+              .catch((err) => {
                 responseClient(res);
                 return;
               });
           } else {
-            responseClient(res, 400, 1, '授权登录失败', response);
+            responseClient(res, 400, 1, "授权登录失败", response);
           }
         });
     })
-    .catch(e => {
-      console.log('e:', e);
+    .catch((e) => {
+      console.log("e:", e);
     });
 };
 
 exports.login = (req, res) => {
   let { email, password } = req.body;
   if (!email) {
-    responseClient(res, 400, 2, '用户邮箱不可为空');
+    responseClient(res, 400, 2, "用户邮箱不可为空");
     return;
   }
   if (!password) {
-    responseClient(res, 400, 2, '密码不可为空');
+    responseClient(res, 400, 2, "密码不可为空");
     return;
   }
   User.findOne({
     email,
     password: md5(password + MD5_SUFFIX),
   })
-    .then(userInfo => {
+    .then((userInfo) => {
       if (userInfo) {
         //登录成功后设置session
         req.session.userInfo = userInfo;
-        responseClient(res, 200, 0, '登录成功', userInfo);
+        responseClient(res, 200, 0, "登录成功", userInfo);
       } else {
-        responseClient(res, 400, 1, '用户名或者密码错误');
+        responseClient(res, 400, 1, "用户名或者密码错误");
       }
     })
-    .catch(err => {
+    .catch((err) => {
       responseClient(res);
     });
 };
@@ -120,9 +126,9 @@ exports.login = (req, res) => {
 //用户验证
 exports.userInfo = (req, res) => {
   if (req.session.userInfo) {
-    responseClient(res, 200, 0, '', req.session.userInfo);
+    responseClient(res, 200, 0, "", req.session.userInfo);
   } else {
-    responseClient(res, 200, 1, '请重新登录', req.session.userInfo);
+    responseClient(res, 200, 1, "请重新登录", req.session.userInfo);
   }
 };
 
@@ -130,66 +136,67 @@ exports.userInfo = (req, res) => {
 exports.currentUser = (req, res) => {
   let user = req.session.userInfo;
   if (user) {
-    user.avatar = 'https://avatars.githubusercontent.com/u/41136716?v=4';
+    user.avatar = "https://avatars.githubusercontent.com/u/41136716?v=4";
     user.notifyCount = 0;
-    user.address = '浙江省';
-    user.country = 'China';
-    user.group = '包子窝';
-    (user.title = '前端萌新'), (user.signature = '海纳百川，有容乃大');
+    user.address = "浙江省";
+    user.country = "China";
+    user.group = "包子窝";
+    user.title = "前端萌新";
+    user.signature = "一个知识越贫乏的人，越是拥有一种莫名奇怪的勇气和自豪感，因为知识越贫乏，你所相信的东西就越绝对";
     user.tags = [];
     user.geographic = {
       province: {
-        label: '浙江省',
-        key: '300000',
+        label: "浙江省",
+        key: "300000",
       },
       city: {
-        label: '杭州市',
-        key: '300100',
+        label: "杭州市",
+        key: "300100",
       },
     };
-    responseClient(res, 200, 0, '', user);
+    responseClient(res, 200, 0, "", user);
   } else {
-    responseClient(res, 200, 1, '请重新登录', user);
+    responseClient(res, 200, 1, "请重新登录", user);
   }
 };
 
 exports.logout = (req, res) => {
   if (req.session.userInfo) {
     req.session.userInfo = null; // 删除session
-    responseClient(res, 200, 0, '登出成功！！');
+    responseClient(res, 200, 0, "登出成功！！");
   } else {
-    responseClient(res, 200, 1, '您还没登录！！！');
+    responseClient(res, 200, 1, "您还没登录！！！");
   }
 };
 
 exports.loginAdmin = (req, res) => {
   let { email, password } = req.body;
   if (!email) {
-    responseClient(res, 400, 2, '用户邮箱不可为空');
+    responseClient(res, 400, 2, "用户邮箱不可为空");
     return;
   }
   if (!password) {
-    responseClient(res, 400, 2, '密码不可为空');
+    responseClient(res, 400, 2, "密码不可为空");
     return;
   }
   User.findOne({
     email,
-    password: md5(password + MD5_SUFFIX),
+    // password: md5(password + MD5_SUFFIX),
   })
-    .then(userInfo => {
+    .then((userInfo) => {
       if (userInfo) {
         if (userInfo.type === 0) {
           //登录成功后设置session
           req.session.userInfo = userInfo;
-          responseClient(res, 200, 0, '登录成功', userInfo);
+          responseClient(res, 200, 0, "登录成功", userInfo);
         } else {
-          responseClient(res, 403, 1, '只有管理员才能登录后台！');
+          responseClient(res, 403, 1, "只有管理员才能登录后台！");
         }
       } else {
-        responseClient(res, 400, 1, '用户名或者密码错误');
+        responseClient(res, 400, 1, "用户名或者密码错误");
       }
     })
-    .catch(err => {
+    .catch((err) => {
       responseClient(res);
     });
 };
@@ -197,37 +204,37 @@ exports.loginAdmin = (req, res) => {
 exports.register = (req, res) => {
   // let { name, password, phone, email, introduce, type } = req.body;
   let { name, password, phone, email, introduce, type } = {
-    "name": "helishou",
-    "password": "86699596",
-    "email": "479525390@qq.com",
-    "phone": 15659825289,
-    "type": 0,
-    "introduce":"加班到天明，学习到昏厥!!!"
-   };
+    name: "河狸兽",
+    password: "86699596",
+    email: "479525390@qq.com",
+    phone: 15659825289,
+    type: 0,
+    introduce: "加班到天明，学习到昏厥!!!",
+  };
   if (!email) {
-    responseClient(res, 400, 2, '用户邮箱不可为空');
+    responseClient(res, 400, 2, "用户邮箱不可为空");
     return;
   }
   const reg = new RegExp(
-    '^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$',
+    "^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"
   ); //正则表达式
   if (!reg.test(email)) {
-    responseClient(res, 400, 2, '请输入格式正确的邮箱！');
+    responseClient(res, 400, 2, "请输入格式正确的邮箱！");
     return;
   }
   if (!name) {
-    responseClient(res, 400, 2, '用户名不可为空');
+    responseClient(res, 400, 2, "用户名不可为空");
     return;
   }
   if (!password) {
-    responseClient(res, 400, 2, '密码不可为空');
+    responseClient(res, 400, 2, "密码不可为空");
     return;
   }
   //验证用户是否已经在数据库中
   User.findOne({ email: email })
-    .then(data => {
+    .then((data) => {
       if (data) {
-        responseClient(res, 200, 1, '用户邮箱已存在！');
+        responseClient(res, 200, 1, "用户邮箱已存在！");
         return;
       }
       //保存到数据库
@@ -239,11 +246,11 @@ exports.register = (req, res) => {
         type,
         introduce,
       });
-      user.save().then(data => {
-        responseClient(res, 200, 0, '注册成功', data);
+      user.save().then((data) => {
+        responseClient(res, 200, 0, "注册成功", data);
       });
     })
-    .catch(err => {
+    .catch((err) => {
       responseClient(res);
       return;
     });
@@ -252,25 +259,25 @@ exports.register = (req, res) => {
 exports.delUser = (req, res) => {
   let { id } = req.body;
   User.deleteMany({ _id: id })
-    .then(result => {
+    .then((result) => {
       if (result.n === 1) {
-        responseClient(res, 200, 0, '用户删除成功!');
+        responseClient(res, 200, 0, "用户删除成功!");
       } else {
-        responseClient(res, 200, 1, '用户不存在');
+        responseClient(res, 200, 1, "用户不存在");
       }
     })
-    .catch(err => {
+    .catch((err) => {
       responseClient(res);
     });
 };
 
 exports.getUserList = (req, res) => {
-  let keyword = req.query.keyword || '';
+  let keyword = req.query.keyword || "";
   let pageNum = parseInt(req.query.pageNum) || 1;
   let pageSize = parseInt(req.query.pageSize) || 10;
   let conditions = {};
   if (keyword) {
-    const reg = new RegExp(keyword, 'i');
+    const reg = new RegExp(keyword, "i");
     conditions = {
       $or: [{ name: { $regex: reg } }, { email: { $regex: reg } }],
     };
@@ -282,7 +289,7 @@ exports.getUserList = (req, res) => {
   };
   User.countDocuments({}, (err, count) => {
     if (err) {
-      console.error('Error:' + err);
+      console.error("Error:" + err);
     } else {
       responseData.count = count;
       // 待返回的字段
@@ -303,11 +310,11 @@ exports.getUserList = (req, res) => {
       };
       User.find(conditions, fields, options, (error, result) => {
         if (err) {
-          console.error('Error:' + error);
+          console.error("Error:" + error);
           // throw error;
         } else {
           responseData.list = result;
-          responseClient(res, 200, 0, 'success', responseData);
+          responseClient(res, 200, 0, "success", responseData);
         }
       });
     }
