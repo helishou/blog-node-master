@@ -1,6 +1,13 @@
 /*
-*所有的路由接口
-*/
+ * @Author       : helishou
+ * @Date         : 2021-05-26 19:46:35
+ * @LastEditTime : 2021-06-01 15:50:11
+ * @LastEditors  : helishou
+ * @Description  : 所有的路由接口
+ * @FilePath     : d:\desk\sakura\express\routes\index.js
+ * 你用你的指尖,阻止我说再见,在bug完全失去之前
+ */
+
 const user = require('./user');
 const article = require('./article');
 const comment = require('./comment');
@@ -55,12 +62,6 @@ module.exports = app => {
 	app.post('/addCategory', category.addCategory);
 	app.post('/delCategory', category.delCategory);
 	app.get('/getCategoryList', category.getCategoryList);
-
-	app.post('/addTimeAxis', timeAxis.addTimeAxis);
-	app.post('/updateTimeAxis', timeAxis.updateTimeAxis);
-	app.post('/delTimeAxis', timeAxis.delTimeAxis);
-	app.get('/getTimeAxisList', timeAxis.getTimeAxisList);
-	app.post('/getTimeAxisDetail', timeAxis.getTimeAxisDetail);
 
 	app.post('/addProject', project.addProject);
 	app.post('/updateProject', project.updateProject);

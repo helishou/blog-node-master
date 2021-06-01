@@ -181,7 +181,7 @@ exports.loginAdmin = (req, res) => {
   }
   User.findOne({
     email,
-    // password: md5(password + MD5_SUFFIX),
+    password: md5(password + MD5_SUFFIX),
   })
     .then((userInfo) => {
       if (userInfo) {
