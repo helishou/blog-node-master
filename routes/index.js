@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-05-26 19:46:35
- * @LastEditTime : 2021-06-01 15:50:11
+ * @LastEditTime : 2021-06-01 23:08:55
  * @LastEditors  : helishou
  * @Description  : 所有的路由接口
  * @FilePath     : d:\desk\sakura\express\routes\index.js
@@ -15,7 +15,6 @@ const message = require('./message');
 const tag = require('./tag');
 const link = require('./link');
 const category = require('./category');
-const timeAxis = require('./timeAxis');
 const project = require('./project');
 // const head = require('./header')
 module.exports = app => {
