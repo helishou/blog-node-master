@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-05-26 19:50:13
- * @LastEditTime : 2021-06-01 15:49:42
+ * @LastEditTime : 2021-06-02 15:28:05
  * @LastEditors  : helishou
  * @Description  : 启动文件
  * @FilePath     : d:\desk\sakura\express\bin\www
@@ -37,7 +37,7 @@ const server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port,'localhost',() => {
+server.listen(port,() => {
   const host = server.address().address
   const port = server.address().port
 
