@@ -65,8 +65,8 @@ exports.getUser = (req, res) => {
                 console.log('userInfo :', userInfo);
                 if (userInfo) {
                   //登录成功后设置session
-                  // req.session.userInfo = userInfo;
-                  responseClient(res, 200, 0, "授权登录成功", userInfo);
+                  req.session.userInfo = userInfo.json();
+                  responseClient(res, 200, 0, "授权登录成功", userInfo.json());
                 } else {
                   console.log('else')
                   let obj = {
@@ -82,8 +82,8 @@ exports.getUser = (req, res) => {
                   let user = new User(obj);
                   user.save().then((data) => {
                     console.log("github:data :", data);
-                    // req.session.userInfo = data;
-                    responseClient(res, 200, 0, "授权登录成功", data);
+                    req.session.userInfo = data.json();
+                    responseClient(res, 200, 0, "授权登录成功", data.json());
                   });
                 }
               })
