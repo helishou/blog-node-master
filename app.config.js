@@ -60,8 +60,8 @@ exports.GITHUB = {
 	// 请把生产环境的 redirect_url，client_id 和 client_secret 中的 "****", 换成自己创建的 OAuth App 的具体参数即可。
 	// // 生产环境
 	redirect_uri: "http://wangxinyang.xyz/login",
-	client_id: "eeb6852852645a7bc976",
-	client_secret: "22e834508732cf7720884db5cd939e1f33a3f4e9",
+	client_id: "51854bed29b55e611d18",
+	client_secret: "fab69f559b39a49929102ad67acf0f89d1c6720c",
 
 	// 开发环境 （参数可以直接用，公供测试）
 // 	redirect_url: "http://localhost:3001/login",

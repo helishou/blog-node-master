@@ -82,7 +82,7 @@ exports.getUser = (req, res) => {
                 }
               })
               .catch((err) => {
-                responseClient(res);
+                responseClient(res,503,1,"出错", err);
                 return;
               });
           } else {
