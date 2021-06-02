@@ -44,9 +44,14 @@ exports.getUser = (req, res) => {
       return access_token;
     })
     .then(async (token) => {
-      const url = CONFIG.GITHUB.user_url + "?access_token=" + token;
+      const url = CONFIG.GITHUB.user_url ;
+      // + "?access_token=" + token
       console.log("url:", url);
-      await fetch(url)
+      await fetch(url,{
+        headers:{
+          'Authorization':"token "+token
+        }
+      })
         .then((res2) => {
           console.log("res2 :", res2);
           return res2.json();
