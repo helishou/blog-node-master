@@ -64,9 +64,10 @@ exports.getUser = (req, res) => {
               .then((userInfo) => {
                 console.log('userInfo :', userInfo);
                 if (userInfo) {
+                  console.log('11111')
                   //登录成功后设置session
                   // req.session.userInfo = userInfo;
-                  responseClient(res, 200, 0, "success");
+                  res.status(200)
                 } else {
                   console.log('else')
                   let obj = {
