@@ -62,12 +62,13 @@ exports.getUser = (req, res) => {
             //验证用户是否已经在数据库中
             User.findOne({ github_id: response.id })
               .then((userInfo) => {
-                // console.log('userInfo :', userInfo);
+                console.log('userInfo :', userInfo);
                 if (userInfo) {
                   //登录成功后设置session
                   req.session.userInfo = userInfo;
                   responseClient(res, 200, 0, "授权登录成功", userInfo);
                 } else {
+                  console.log('else')
                   let obj = {
                     github_id: response.id,
                     email: response.email,
