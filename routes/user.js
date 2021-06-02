@@ -12,7 +12,7 @@ import { MD5_SUFFIX, responseClient, md5 } from "../util/util.js";
 
 // 第三方授权登录的用户信息
 exports.getUser = (req, res) => {
-  console.log("code", req, res);
+  // console.log("code", req, res);
   let { code } = req.body;
   if (!code) {
     responseClient(res, 400, 2, "code 缺失");
@@ -24,7 +24,7 @@ exports.getUser = (req, res) => {
     client_secret: CONFIG.GITHUB.client_secret,
     code: code,
   };
-  // console.log(code);
+  console.log('params',params);
   fetch(path, {
     method: "POST",
     headers: {
