@@ -1,3 +1,12 @@
+/*
+ * @Author       : helishou
+ * @Date         : 2021-05-26 19:46:35
+ * @LastEditTime : 2021-06-03 16:35:45
+ * @LastEditors  : helishou
+ * @Description  : 评论接口
+ * @FilePath     : d:\desk\sakura\express\routes\comment.js
+ * 你用你的指尖,阻止我说再见,在bug完全失去之前
+ */
 import { responseClient } from '../util/util';
 import Comment from '../models/comment';
 import User from '../models/user';
@@ -210,10 +219,11 @@ exports.addThirdComment = (req, res) => {
 
 // 管理一级评论
 exports.changeComment = (req, res) => {
-  // if (!req.session.userInfo) {
-  // 	responseClient(res, 200, 1, '您还没登录,或者登录信息已过期，请重新登录！');
-  // 	return;
-  // }
+  if (!req.session.userInfo) {
+    console.log('req.session',req.session)
+  	responseClient(res, 200, 1, '您还没登录,或者登录信息已过期，请重新登录！');
+  	return;
+  }
   let { id, state } = req.body;
   Comment.updateOne(
     { _id: id },
@@ -233,10 +243,11 @@ exports.changeComment = (req, res) => {
 
 // 管理第三者评论
 exports.changeThirdComment = (req, res) => {
-  // if (!req.session.userInfo) {
-  // 	responseClient(res, 200, 1, '您还没登录,或者登录信息已过期，请重新登录！');
-  // 	return;
-  // }
+  if (!req.session.userInfo) {
+    console.log('req.session',req.session)
+  	responseClient(res, 200, 1, '您还没登录,或者登录信息已过期，请重新登录！');
+  	return;
+  }
   let { id, state, index } = req.body;
   Comment.findById({
     _id: id,

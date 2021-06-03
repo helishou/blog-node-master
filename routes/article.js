@@ -1,12 +1,13 @@
-import Article from '../models/article';
-import User from '../models/user';
-import { responseClient, timestampToTime } from '../util/util';
+import Article from "../models/article";
+import User from "../models/user";
+import { responseClient, timestampToTime } from "../util/util";
 
 exports.addArticle = (req, res) => {
-  // if (!req.session.userInfo) {
-  // 	responseClient(res, 200, 1, '您还没登录,或者登录信息已过期，请重新登录！');
-  // 	return;
-  // }
+  if (!req.session.userInfo) {
+    console.log(req.session);
+    responseClient(res, 200, 1, "您还没登录,或者登录信息已过期，请重新登录！");
+    return;
+  }
   const {
     title,
     author,
@@ -25,13 +26,13 @@ exports.addArticle = (req, res) => {
     tempArticle = new Article({
       title,
       author,
-      keyword: keyword ? keyword.split(',') : [],
+      keyword: keyword ? keyword.split(",") : [],
       content,
       numbers: content.length,
       desc,
       img_url,
-      tags: tags ? tags.split(',') : [],
-      category: category ? category.split(',') : [],
+      tags: tags ? tags.split(",") : [],
+      category: category ? category.split(",") : [],
       state,
       type,
       origin,
@@ -40,12 +41,12 @@ exports.addArticle = (req, res) => {
     tempArticle = new Article({
       title,
       author,
-      keyword: keyword ? keyword.split(',') : [],
+      keyword: keyword ? keyword.split(",") : [],
       content,
       numbers: content.length,
       desc,
-      tags: tags ? tags.split(',') : [],
-      category: category ? category.split(',') : [],
+      tags: tags ? tags.split(",") : [],
+      category: category ? category.split(",") : [],
       state,
       type,
       origin,
@@ -54,25 +55,26 @@ exports.addArticle = (req, res) => {
 
   tempArticle
     .save()
-    .then(data => {
+    .then((data) => {
       // let article = JSON.parse(JSON.stringify(data));
       // console.log('article :', article);
       // article.create_time = timestampToTime(article.create_time);
       // article.update_time = timestampToTime(article.update_time);
       // console.log('timestampToTime :', timestampToTime(data.create_time));
-      responseClient(res, 200, 0, '保存成功', data);
+      responseClient(res, 200, 0, "保存成功", data);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       responseClient(res);
     });
 };
 
 exports.updateArticle = (req, res) => {
-  // if (!req.session.userInfo) {
-  // 	responseClient(res, 200, 1, '您还没登录,或者登录信息已过期，请重新登录！');
-  // 	return;
-  // }
+  if (!req.session.userInfo) {
+    console.log(req.session);
+    responseClient(res, 200, 1, "您还没登录,或者登录信息已过期，请重新登录！");
+    return;
+  }
   const {
     title,
     author,
@@ -92,21 +94,22 @@ exports.updateArticle = (req, res) => {
     {
       title,
       author,
-      keyword: keyword ? keyword.split(',') : [],
+      keyword: keyword ? keyword.split(",") : [],
       content,
       desc,
       img_url,
-      tags: tags ? tags.split(',') : [],
-      category: category ? category.split(',') : [],
+      tags: tags ? tags.split(",") : [],
+      category: category ? category.split(",") : [],
       state,
       type,
       origin,
-    },
+      update_time: Date.now(),
+    }
   )
-    .then(result => {
-      responseClient(res, 200, 0, '操作成功', result);
+    .then((result) => {
+      responseClient(res, 200, 0, "操作成功", result);
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       responseClient(res);
     });
@@ -115,15 +118,15 @@ exports.updateArticle = (req, res) => {
 exports.delArticle = (req, res) => {
   let { id } = req.body;
   Article.deleteMany({ _id: id })
-    .then(result => {
+    .then((result) => {
       if (result.n === 1) {
-        responseClient(res, 200, 0, '删除成功!');
+        responseClient(res, 200, 0, "删除成功!");
       } else {
-        responseClient(res, 200, 1, '文章不存在');
+        responseClient(res, 200, 1, "文章不存在");
       }
     })
-    .catch(err => {
-      console.error('err :', err);
+    .catch((err) => {
+      console.error("err :", err);
       responseClient(res);
     });
 };
@@ -131,12 +134,12 @@ exports.delArticle = (req, res) => {
 // 前台文章列表
 exports.getArticleList = (req, res) => {
   let keyword = req.query.keyword || null;
-  let state = req.query.state || '';
-  let likes = req.query.likes || '';
+  let state = req.query.state || "";
+  let likes = req.query.likes || "";
   let origin = req.query.origin || null;
-  let tag_id = req.query.tag_id || '';
-  let category_id = req.query.category_id || '';
-  let article = req.query.article || '';
+  let tag_id = req.query.tag_id || "";
+  let category_id = req.query.category_id || "";
+  let article = req.query.article || "";
   let pageNum = parseInt(req.query.pageNum) || 1;
   let pageSize = parseInt(req.query.pageSize) || 10;
   // 如果是文章归档 返回全部文章
@@ -146,7 +149,7 @@ exports.getArticleList = (req, res) => {
   let conditions = {};
   if (!state) {
     if (keyword) {
-      const reg = new RegExp(keyword, 'i'); //不区分大小写
+      const reg = new RegExp(keyword, "i"); //不区分大小写
       conditions = {
         $or: [{ title: { $regex: reg } }, { desc: { $regex: reg } }],
       };
@@ -154,7 +157,7 @@ exports.getArticleList = (req, res) => {
   } else if (state) {
     state = parseInt(state);
     if (keyword) {
-      const reg = new RegExp(keyword, 'i');
+      const reg = new RegExp(keyword, "i");
       conditions = {
         $and: [
           { $or: [{ state: state }] },
@@ -179,7 +182,7 @@ exports.getArticleList = (req, res) => {
   };
   Article.countDocuments({}, (err, count) => {
     if (err) {
-      console.log('Error:' + err);
+      console.log("Error:" + err);
     } else {
       responseData.count = count;
       // 待返回的字段
@@ -191,9 +194,9 @@ exports.getArticleList = (req, res) => {
         category: 1,
         meta: 1,
         create_time: 1,
-        origin:1,
+        origin: 1,
       };
-      if(article){
+      if (article) {
         fields = {
           title: 1,
           create_time: 1,
@@ -206,7 +209,7 @@ exports.getArticleList = (req, res) => {
       };
       Article.find(conditions, fields, options, (error, result) => {
         if (err) {
-          console.error('Error:' + error);
+          console.error("Error:" + error);
           // throw error;
         } else {
           let newList = [];
@@ -219,7 +222,7 @@ exports.getArticleList = (req, res) => {
           } else if (category_id) {
             // console.log('category_id :', category_id);
             // 根据 分类 id 返回数据
-            result.forEach(item => {
+            result.forEach((item) => {
               if (item.category.indexOf(category_id) > -1) {
                 newList.push(item);
               }
@@ -230,7 +233,7 @@ exports.getArticleList = (req, res) => {
           } else if (tag_id) {
             // console.log('tag_id :', tag_id);
             // 根据标签 id 返回数据
-            result.forEach(item => {
+            result.forEach((item) => {
               if (item.tags.indexOf(tag_id) > -1) {
                 newList.push(item);
               }
@@ -238,49 +241,49 @@ exports.getArticleList = (req, res) => {
             let len = newList.length;
             responseData.count = len;
             responseData.list = newList;
-          } else if (origin!==null) {
+          } else if (origin !== null) {
             // console.log('tag_id :', tag_id);
             // 根据标签 id 返回数据
-            result.forEach(item => {
-              if (item.origin==origin) {
+            result.forEach((item) => {
+              if (item.origin == origin) {
                 newList.push(item);
               }
             });
             let len = newList.length;
             responseData.count = len;
             responseData.list = newList;
-            }else if (article) {
-            const archiveList = []
-            let obj = {}
-            // 按年份归档 文章数组
+          } else if (article) {
+            const archiveList = [];
+            let obj = {};
+            // 按年月份归档 文章数组
             result.forEach((e) => {
-              let year = e.create_time.getFullYear()
-              // let month = e.create_time.getMonth()
-              if(!obj[year]){
-                obj[year] = []
-                obj[year].push(e)
+              let year = e.create_time.getFullYear();
+              let month = e.create_time.getMonth();
+              let yearMonth = parseInt(year +''+  month);
+              if (!obj[yearMonth]) {
+                obj[yearMonth] = [];
+                obj[yearMonth].push(e);
               } else {
-                obj[year].push(e)
+                obj[yearMonth].push(e);
               }
-            })
+            });
             for (const key in obj) {
               if (obj.hasOwnProperty(key)) {
                 const element = obj[key];
-                let item = {}
-                item.year = key
-                item.list = element
-                archiveList.push(item)
+                let item = {};
+                item.yearMonth = key;
+                item.list = element;
+                archiveList.push(item);
               }
             }
             archiveList.sort((a, b) => {
-              return b.year - a.year;
+              return b.yearMonth - a.yearMonth;
             });
             responseData.list = archiveList;
-          }
-          else {
+          } else {
             responseData.list = result;
           }
-          responseClient(res, 200, 0, '操作成功！', responseData);
+          responseClient(res, 200, 0, "操作成功！", responseData);
         }
       });
     }
@@ -290,14 +293,14 @@ exports.getArticleList = (req, res) => {
 // 后台文章列表
 exports.getArticleListAdmin = (req, res) => {
   let keyword = req.query.keyword || null;
-  let state = req.query.state || '';
-  let likes = req.query.likes || '';
+  let state = req.query.state || "";
+  let likes = req.query.likes || "";
   let pageNum = parseInt(req.query.pageNum) || 1;
   let pageSize = parseInt(req.query.pageSize) || 10;
   let conditions = {};
   if (!state) {
     if (keyword) {
-      const reg = new RegExp(keyword, 'i'); //不区分大小写
+      const reg = new RegExp(keyword, "i"); //不区分大小写
       conditions = {
         $or: [{ title: { $regex: reg } }, { desc: { $regex: reg } }],
       };
@@ -305,7 +308,7 @@ exports.getArticleListAdmin = (req, res) => {
   } else if (state) {
     state = parseInt(state);
     if (keyword) {
-      const reg = new RegExp(keyword, 'i');
+      const reg = new RegExp(keyword, "i");
       conditions = {
         $and: [
           { $or: [{ state: state }] },
@@ -330,7 +333,7 @@ exports.getArticleListAdmin = (req, res) => {
   };
   Article.countDocuments({}, (err, count) => {
     if (err) {
-      console.log('Error:' + err);
+      console.log("Error:" + err);
     } else {
       responseData.count = count;
       // 待返回的字段
@@ -359,7 +362,7 @@ exports.getArticleListAdmin = (req, res) => {
       };
       Article.find(conditions, fields, options, (error, result) => {
         if (err) {
-          console.error('Error:' + error);
+          console.error("Error:" + error);
           // throw error;
         } else {
           if (likes) {
@@ -368,13 +371,13 @@ exports.getArticleListAdmin = (req, res) => {
             });
           }
           responseData.list = result;
-          responseClient(res, 200, 0, '操作成功！', responseData);
+          responseClient(res, 200, 0, "操作成功！", responseData);
         }
       })
         .populate([
-          { path: 'tags' },
-          { path: 'comments' },
-          { path: 'category' },
+          { path: "tags" },
+          { path: "comments" },
+          { path: "category" },
         ])
         .exec((err, doc) => {
           // console.log("doc:");          // aikin
@@ -388,18 +391,19 @@ exports.getArticleListAdmin = (req, res) => {
 // 文章点赞
 exports.likeArticle = (req, res) => {
   if (!req.session.userInfo) {
-    responseClient(res, 200, 1, '您还没登录,或者登录信息已过期，请重新登录！');
+    console.log(req.session);
+    responseClient(res, 200, 1, "您还没登录,或者登录信息已过期，请重新登录！");
     return;
   }
   let { id, user_id } = req.body;
   Article.findOne({ _id: id })
-    .then(data => {
+    .then((data) => {
       let fields = {};
       data.meta.likes = data.meta.likes + 1;
       fields.meta = data.meta;
       let like_users_arr = data.like_users.length ? data.like_users : [];
       User.findOne({ _id: user_id })
-        .then(user => {
+        .then((user) => {
           let new_like_user = {};
           new_like_user.id = user._id;
           new_like_user.name = user.name;
@@ -410,22 +414,22 @@ exports.likeArticle = (req, res) => {
           like_users_arr.push(new_like_user);
           fields.like_users = like_users_arr;
           Article.update({ _id: id }, fields)
-            .then(result => {
-              responseClient(res, 200, 0, '操作成功！', result);
+            .then((result) => {
+              responseClient(res, 200, 0, "操作成功！", result);
             })
-            .catch(err => {
-              console.error('err :', err);
+            .catch((err) => {
+              console.error("err :", err);
               throw err;
             });
         })
-        .catch(err => {
+        .catch((err) => {
           responseClient(res);
-          console.error('err 1:', err);
+          console.error("err 1:", err);
         });
     })
-    .catch(err => {
+    .catch((err) => {
       responseClient(res);
-      console.error('err 2:', err);
+      console.error("err 2:", err);
     });
 };
 
@@ -433,29 +437,30 @@ exports.likeArticle = (req, res) => {
 exports.getArticleDetailByType = (req, res) => {
   let { type } = req.body;
   if (!type) {
-    responseClient(res, 200, 1, '文章不存在 ！');
+    responseClient(res, 200, 1, "文章不存在 ！");
     return;
   }
   Article.findOne({ type: type }, (Error, data) => {
     if (Error) {
-      console.error('Error:' + Error);
+      console.error("Error:" + Error);
       // throw error;
     } else {
       data.meta.views = data.meta.views + 1;
       Article.updateOne({ type: type }, { meta: data.meta })
-        .then(result => {
-          responseClient(res, 200, 0, '操作成功 ！', data);
+        .then((result) => {
+          responseClient(res, 200, 0, "操作成功 ！", data);
         })
-        .catch(err => {
-          console.error('err :', err);
+        .catch((err) => {
+          console.error("err :", err);
           throw err;
         });
     }
   })
     .populate([
-      { path: 'tags', select: '-_id' },
-      { path: 'category', select: '-_id' },
-      { path: 'comments', select: '-_id' },
+      //通过一个外键与另一张表建立关联
+      { path: "tags", select: "-_id" },
+      { path: "category", select: "-_id" },
+      { path: "comments", select: "-_id" },
     ])
     .exec((err, doc) => {
       // console.log("doc:");          // aikin
@@ -472,17 +477,17 @@ exports.getArticleDetail = (req, res) => {
   // console.log('type:', type);
   if (type === 1) {
     if (!id) {
-      responseClient(res, 200, 1, '文章不存在 ！');
+      responseClient(res, 200, 1, "文章不存在 ！");
       return;
     }
     Article.findOne({ _id: id }, (Error, data) => {
       if (Error) {
-        console.error('Error:' + Error);
+        console.error("Error:" + Error);
         // throw error;
       } else {
         data.meta.views = data.meta.views + 1;
         Article.updateOne({ _id: id }, { meta: data.meta })
-          .then(result => {
+          .then((result) => {
             // console.log('data:',data)
             if (filter === 1) {
               const arr = data.comments;
@@ -504,15 +509,15 @@ exports.getArticleDetail = (req, res) => {
               }
             }
 
-            responseClient(res, 200, 0, '操作成功 ！', data);
+            responseClient(res, 200, 0, "操作成功 ！", data);
           })
-          .catch(err => {
-            console.error('err :', err);
+          .catch((err) => {
+            console.error("err :", err);
             throw err;
           });
       }
     })
-      .populate([{ path: 'tags' }, { path: 'category' }, { path: 'comments' }])
+      .populate([{ path: "tags" }, { path: "category" }, { path: "comments" }])
       .exec((err, doc) => {
         // console.log("doc:");          // aikin
         // console.log("doc.tags:",doc.tags);          // aikin
@@ -521,13 +526,13 @@ exports.getArticleDetail = (req, res) => {
   } else {
     Article.findOne({ type: type }, (Error, data) => {
       if (Error) {
-        console.log('Error:' + Error);
+        console.log("Error:" + Error);
         // throw error;
       } else {
         if (data) {
           data.meta.views = data.meta.views + 1;
           Article.updateOne({ type: type }, { meta: data.meta })
-            .then(result => {
+            .then((result) => {
               if (filter === 1) {
                 const arr = data.comments;
                 for (let i = arr.length - 1; i >= 0; i--) {
@@ -547,19 +552,19 @@ exports.getArticleDetail = (req, res) => {
                   }
                 }
               }
-              responseClient(res, 200, 0, '操作成功 ！', data);
+              responseClient(res, 200, 0, "操作成功 ！", data);
             })
-            .catch(err => {
-              console.error('err :', err);
+            .catch((err) => {
+              console.error("err :", err);
               throw err;
             });
         } else {
-          responseClient(res, 200, 1, '文章不存在 ！');
+          responseClient(res, 200, 1, "文章不存在 ！");
           return;
         }
       }
     })
-      .populate([{ path: 'tags' }, { path: 'category' }, { path: 'comments' }])
+      .populate([{ path: "tags" }, { path: "category" }, { path: "comments" }])
       .exec((err, doc) => {
         // console.log("doc:");          // aikin
         // console.log("doc.tags:",doc.tags);          // aikin
