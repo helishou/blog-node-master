@@ -1,3 +1,12 @@
+/*
+ * @Author       : helishou
+ * @Date         : 2021-05-26 19:46:35
+ * @LastEditTime : 2021-06-03 16:02:59
+ * @LastEditors  : helishou
+ * @Description  : 友情链接接口
+ * @FilePath     : d:\desk\sakura\express\routes\link.js
+ * 你用你的指尖,阻止我说再见,在bug完全失去之前
+ */
 import { responseClient } from '../util/util';
 import Link from '../models/link';
 
@@ -38,8 +47,8 @@ exports.getLinkList = (req, res) => {
 			let fields = {
 				_id: 1,
 				name: 1,
-				// desc: 1,
-				// type: 1,
+				desc: 1,
+				type: 1,
 				url: 1,
 				icon: 1,
 				// state: 1,

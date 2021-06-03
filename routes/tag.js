@@ -1,3 +1,12 @@
+/*
+ * @Author       : helishou
+ * @Date         : 2021-05-26 19:46:35
+ * @LastEditTime : 2021-06-03 16:03:38
+ * @LastEditors  : helishou
+ * @Description  : 标签接口
+ * @FilePath     : d:\desk\sakura\express\routes\tag.js
+ * 你用你的指尖,阻止我说再见,在bug完全失去之前
+ */
 import { responseClient } from '../util/util';
 import Tag from '../models/tag';
 

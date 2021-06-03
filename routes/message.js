@@ -1,3 +1,12 @@
+/*
+ * @Author       : helishou
+ * @Date         : 2021-05-26 19:46:35
+ * @LastEditTime : 2021-06-03 16:03:17
+ * @LastEditors  : helishou
+ * @Description  : 留言接口
+ * @FilePath     : d:\desk\sakura\express\routes\message.js
+ * 你用你的指尖,阻止我说再见,在bug完全失去之前
+ */
 import { responseClient } from '../util/util';
 import Message from '../models/message';
 import User from '../models/user';
@@ -59,9 +68,9 @@ exports.getMessageList = (req, res) => {
 				// update_time: 1,
 			};
 			let options = {
-				skip: skip,
-				limit: pageSize,
-				sort: { create_time: -1 },
+				skip: skip,//跳过前skip个
+				limit: pageSize, // 限制数量
+				sort: { create_time: -1 }, //按创建时间排序
 			};
 			Message.find(conditions, fields, options, (error, result) => {
 				if (err) {

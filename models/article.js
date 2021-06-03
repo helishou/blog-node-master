@@ -1,8 +1,11 @@
-/**
- * Article model module.
- * @file 文章数据模型
- * @module model/article
- * @author helishou <https://github.com/helishou>
+/*
+ * @Author       : helishou
+ * @Date         : 2021-05-26 19:50:12
+ * @LastEditTime : 2021-06-03 18:42:59
+ * @LastEditors  : helishou
+ * @Description  : 文章数据模型
+ * @FilePath     : d:\desk\sakura\express\models\article.js
+ * 你用你的指尖,阻止我说再见,在bug完全失去之前
  */
 
 const { mongoose } = require('../core/mongodb.js');
@@ -40,7 +43,7 @@ const articleSchema = new mongoose.Schema({
 	// 文章转载状态 => 0 原创，1 转载，2 混合
 	origin: { type: Number, default: 0 },
 
-	// 文章标签
+	// 文章标签 ref 选项告诉 Mongoose 在使用 populate() 填充的时候使用哪个 Model
 	tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag', required: true }],
 
 	comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment', required: true }],
