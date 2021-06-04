@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-05-26 19:46:35
- * @LastEditTime : 2021-06-03 16:03:54
+ * @LastEditTime : 2021-06-04 19:32:12
  * @LastEditors  : helishou
  * @Description  : 所有的路由接口主文件
  * @FilePath     : d:\desk\sakura\express\routes\index.js
@@ -16,6 +16,7 @@ const tag = require('./tag');
 const link = require('./link');
 const category = require('./category');
 const project = require('./project');
+const transmit = require('./transmit')
 // const head = require('./header')
 module.exports = app => {
 	app.post('/login', user.login);
@@ -67,4 +68,6 @@ module.exports = app => {
 	app.post('/delProject', project.delProject);
 	app.get('/getProjectList', project.getProjectList);
 	app.post('/getProjectDetail', project.getProjectDetail);
+
+	app.get('/getMusic',transmit.getMusic)
 };
