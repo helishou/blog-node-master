@@ -179,7 +179,7 @@ exports.getArticleList = (req, res) => {
     // 根据 分类 id 返回数据
     conditions = { $and: [{ category: category_id }, conditions] };
   }
-  console.log('conditions'，conditions)
+  console.log('conditions',conditions)
   let skip = pageNum - 1 < 0 ? 0 : (pageNum - 1) * pageSize;
   let responseData = {
     count: 0,
