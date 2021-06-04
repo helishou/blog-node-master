@@ -285,7 +285,14 @@ exports.getArticleList = (req, res) => {
           }
           responseClient(res, 200, 0, "操作成功！", responseData);
         }
-      });
+      }).populate([
+        { path: "category" },
+      ])
+      .exec((err, doc) => {
+        // console.log("doc:");          // aikin
+        // console.log("doc.tags:",doc.tags);          // aikin
+        // console.log("doc.category:",doc.category);           // undefined
+      });;
     }
   });
 };
