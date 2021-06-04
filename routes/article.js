@@ -174,7 +174,12 @@ exports.getArticleList = (req, res) => {
       conditions = { state };
     }
   }
-
+  if (category_id) {
+    // console.log('category_id :', category_id);
+    // 根据 分类 id 返回数据
+    conditions = { $and: [{ category: category_id }, conditions] };
+  }
+  console.log('conditions',conditions)
   let skip = pageNum - 1 < 0 ? 0 : (pageNum - 1) * pageSize;
   let responseData = {
     count: 0,
@@ -219,22 +224,20 @@ exports.getArticleList = (req, res) => {
               return b.meta.likes - a.meta.likes;
             });
             responseData.list = result;
-          } else if (category_id) {
-            // console.log('category_id :', category_id);
-            // 根据 分类 id 返回数据
-            result.forEach((item) => {
-              console.log(item.category)
-              item.category.forEach((item2)=>{
-                console.log('item2',item2)
-                if (item2._id.indexOf(category_id) > -1) {
-                  newList.push(item);
-                }
-              })
-            });
-            let len = newList.length;
-            responseData.count = len;
-            responseData.list = newList;
-          } else if (tag_id) {
+          }
+          // else if (category_id) {
+          //   // console.log('category_id :', category_id);
+          //   // 根据 分类 id 返回数据
+          //   result.forEach((item) => {
+          //     if (item.category.indexOf(category_id) > -1) {
+          //       newList.push(item);
+          //     }
+          //   });
+          //   let len = newList.length;
+          //   responseData.count = len;
+          //   responseData.list = newList;
+          // }
+          else if (tag_id) {
             // console.log('tag_id :', tag_id);
             // 根据标签 id 返回数据
             result.forEach((item) => {
@@ -263,7 +266,7 @@ exports.getArticleList = (req, res) => {
             result.forEach((e) => {
               let year = e.create_time.getFullYear();
               let month = e.create_time.getMonth();
-              let yearMonth = parseInt(year +''+  month);
+              let yearMonth = parseInt(year + "" + month);
               if (!obj[yearMonth]) {
                 obj[yearMonth] = [];
                 obj[yearMonth].push(e);
@@ -289,14 +292,13 @@ exports.getArticleList = (req, res) => {
           }
           responseClient(res, 200, 0, "操作成功！", responseData);
         }
-      }).populate([
-        { path: "category" },
-      ])
-      .exec((err, doc) => {
-        // console.log("doc:");          // aikin
-        // console.log("doc.tags:",doc.tags);          // aikin
-        // console.log("doc.category:",doc.category);           // undefined
-      });;
+      })
+        .populate([{ path: "category" }])
+        .exec((err, doc) => {
+          // console.log("doc:");          // aikin
+          // console.log("doc.tags:",doc.tags);          // aikin
+          // console.log("doc.category:",doc.category);           // undefined
+        });
     }
   });
 };
