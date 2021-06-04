@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-06-02 18:59:20
- * @LastEditTime : 2021-06-03 11:14:48
+ * @LastEditTime : 2021-06-04 16:33:46
  * @LastEditors  : helishou
  * @Description  : 用户相关接口
  * @FilePath     : d:\desk\sakura\express\routes\user.js
@@ -198,6 +198,7 @@ exports.loginAdmin = (req, res) => {
         if (userInfo.type === 0) {
           //登录成功后设置session
           req.session.userInfo = userInfo;
+          console.log(req.session)
           responseClient(res, 200, 0, "登录成功", userInfo);
         } else {
           responseClient(res, 403, 1, "只有管理员才能登录后台！");

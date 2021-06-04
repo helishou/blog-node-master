@@ -11,7 +11,7 @@ const { argv } = require('yargs');
 
 exports.APP = {
 	LIMIT: 10,
-	PORT: 8000,
+	PORT: 3000,
 	ROOT_PATH: __dirname,
 	NAME: 'helishou',
 	URL: 'http://wangxinyang.xyz/main.html',
