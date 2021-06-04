@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-05-26 19:46:35
- * @LastEditTime : 2021-06-04 19:32:12
+ * @LastEditTime : 2021-06-04 23:18:54
  * @LastEditors  : helishou
  * @Description  : 所有的路由接口主文件
  * @FilePath     : d:\desk\sakura\express\routes\index.js
@@ -69,5 +69,5 @@ module.exports = app => {
 	app.get('/getProjectList', project.getProjectList);
 	app.post('/getProjectDetail', project.getProjectDetail);
 
-	app.get('/getMusic',transmit.getMusic)
+	// app.get('/getMusic',transmit.getMusic)
 };
