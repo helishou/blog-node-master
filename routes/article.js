@@ -224,7 +224,7 @@ exports.getArticleList = (req, res) => {
             // 根据 分类 id 返回数据
             result.forEach((item) => {
               console.log(item.category)
-              if (item.category._id.indexOf(category_id) > -1) {
+              if (item.category[0]._id.indexOf(category_id) > -1) {
                 newList.push(item);
               }
             });
