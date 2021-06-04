@@ -223,7 +223,8 @@ exports.getArticleList = (req, res) => {
             // console.log('category_id :', category_id);
             // 根据 分类 id 返回数据
             result.forEach((item) => {
-              if (item.category.indexOf(category_id) > -1) {
+              console.log(item.category)
+              if (item.category._id.indexOf(category_id) > -1) {
                 newList.push(item);
               }
             });
