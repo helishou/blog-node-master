@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-05-26 19:50:12
- * @LastEditTime : 2021-06-04 16:59:48
+ * @LastEditTime : 2021-06-10 15:05:51
  * @LastEditors  : helishou
  * @Description  : 文章数据模型
  * @FilePath     : d:\desk\sakura\express\models\article.js
@@ -35,7 +35,7 @@ const articleSchema = new mongoose.Schema({
   img_url: {
     type: String,
     default:
-      "https://upload-images.jianshu.io/upload_images/12890819-80fa7517ab3f2783.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+      "",
   },
 
   // 文章类型 => 1: 普通文章，2: 简历，3: 管理员介绍

@@ -35,7 +35,7 @@ app.use(
 		name: 'session_id', //# 在浏览器中生成cookie的名称key，默认是connect.sid
 		resave: true,
 		saveUninitialized: true,
-		cookie: { maxAge: 60 * 1000 * 60 * 6, httpOnly: true }, //过期时间
+		cookie: { maxAge: 60 * 1000 * 60 * 24, httpOnly: true }, //过期时间
 	}),
 );
 
