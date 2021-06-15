@@ -179,7 +179,7 @@ exports.getArticleList = (req, res) => {
     // 根据 分类 id 返回数据
     conditions = { $and: [{ category: category_id }, conditions] };
   }
-  console.log('conditions',conditions)
+  console.log("conditions", conditions);
   let skip = pageNum - 1 < 0 ? 0 : (pageNum - 1) * pageSize;
   let responseData = {
     count: 0,
@@ -499,40 +499,44 @@ exports.getArticleDetail = (req, res) => {
         responseClient(res, 500, 3, Error);
         // throw error;
       } else {
-        data.meta.views = data.meta.views + 1;
-        Article.updateOne({ _id: id }, { meta: data.meta })
-          .then((result) => {
-            // console.log('data:',data)
-            if (filter === 1) {
-              const arr = data.comments;
-              for (let i = arr.length - 1; i >= 0; i--) {
-                const e = arr[i];
-                if (e.state !== 1) {
-                  arr.splice(i, 1);
-                }
-                const newArr = e.other_comments;
-                const length = newArr.length;
-                if (length) {
-                  for (let j = length - 1; j >= 0; j--) {
-                    const item = newArr[j];
-                    if (item.state !== 1) {
-                      newArr.splice(j, 1);
+        if (data) {
+          data.meta.views = data.meta.views + 1;
+          Article.updateOne({ _id: id }, { meta: data.meta })
+            .then((result) => {
+              // console.log('data:',data)
+              if (filter === 1) {
+                const arr = data.comments;
+                for (let i = arr.length - 1; i >= 0; i--) {
+                  const e = arr[i];
+                  if (e.state !== 1) {
+                    arr.splice(i, 1);
+                  }
+                  const newArr = e.other_comments;
+                  const length = newArr.length;
+                  if (length) {
+                    for (let j = length - 1; j >= 0; j--) {
+                      const item = newArr[j];
+                      if (item.state !== 1) {
+                        newArr.splice(j, 1);
+                      }
                     }
                   }
                 }
               }
-            }
-
-            responseClient(res, 200, 0, "操作成功 ！", data);
-          })
-          .catch((err) => {
-            console.error("err :", err);
-            throw err;
-          });
+              responseClient(res, 200, 0, "操作成功 ！", data);
+            })
+            .catch((err) => {
+              console.error("err :", err);
+              throw err;
+            });
+        } else {
+          responseClient(res, 200, 1, "文章不存在 ！");
+        }
       }
     })
       .populate([{ path: "tags" }, { path: "category" }, { path: "comments" }])
       .exec((err, doc) => {
+        responseClient(res, 500, 3, err);
         // console.log("doc:");          // aikin
         // console.log("doc.tags:",doc.tags);          // aikin
         // console.log("doc.category:",doc.category);           // undefined
@@ -541,6 +545,7 @@ exports.getArticleDetail = (req, res) => {
     Article.findOne({ type: type }, (Error, data) => {
       if (Error) {
         console.log("Error:" + Error);
+        responseClient(res, 500, 3, Error);
         // throw error;
       } else {
         if (data) {
@@ -570,6 +575,7 @@ exports.getArticleDetail = (req, res) => {
             })
             .catch((err) => {
               console.error("err :", err);
+              responseClient(res, 500, 3, err);
               throw err;
             });
         } else {
