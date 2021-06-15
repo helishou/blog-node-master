@@ -496,6 +496,7 @@ exports.getArticleDetail = (req, res) => {
     Article.findOne({ _id: id }, (Error, data) => {
       if (Error) {
         console.error("Error:" + Error);
+        responseClient(res, 500, 3, Error);
         // throw error;
       } else {
         data.meta.views = data.meta.views + 1;
