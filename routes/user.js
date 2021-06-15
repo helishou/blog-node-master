@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-06-02 18:59:20
- * @LastEditTime : 2021-06-04 16:33:46
+ * @LastEditTime : 2021-06-15 19:06:01
  * @LastEditors  : helishou
  * @Description  : 用户相关接口
  * @FilePath     : d:\desk\sakura\express\routes\user.js
@@ -16,6 +16,56 @@ import { MD5_SUFFIX, responseClient, md5 } from "../util/util.js";
 // 第三方授权登录的用户信息
 exports.getUser = (req, res) => {
   // console.log("code", req, res);
+  let { response } = req.body;
+  if (!response) {
+    responseClient(res, 400, 2, "信息缺失");
+    return;
+  }
+  console.log("response ", response);
+  if (response.id) {
+    //验证用户是否已经在数据库中
+    User.findOne({ github_id: response.id })
+      .then((userInfo) => {
+        console.log("userInfo :", userInfo);
+        if (userInfo) {
+          // console.log("11111");
+          //登录成功后设置session
+          // req.session.userInfo = userInfo;
+          res
+            .status(200)
+            .send({ data: userInfo, code: 0, message: "登录成功" });
+        } else {
+          console.log("else");
+          let obj = {
+            github_id: response.id,
+            email: response.email,
+            password: response.login,
+            type: 2,
+            avatar: response.avatar_url,
+            name: response.login,
+            location: response.location,
+          };
+          //保存到数据库
+          let user = new User(obj);
+          user.save().then((data) => {
+            console.log("github:data :", data);
+            req.session.userInfo = data;
+            responseClient(res, 200, 0, "授权登录成功", data);
+          });
+        }
+      })
+      .catch((err) => {
+        responseClient(res, 503, 1, "出错", err);
+        return;
+      });
+  } else {
+    responseClient(res, 400, 1, "授权登录失败", response);
+  }
+};
+
+// 第三方授权登录的用户信息，前端版
+exports.getUserFront = (req, res) => {
+  // console.log("code", req, res);
   let { code } = req.body;
   if (!code) {
     responseClient(res, 400, 2, "code 缺失");
@@ -27,7 +77,7 @@ exports.getUser = (req, res) => {
     client_secret: CONFIG.GITHUB.client_secret,
     code: code,
   };
-  console.log('params',params);
+  console.log("params", params);
   fetch(path, {
     method: "POST",
     headers: {
@@ -47,13 +97,13 @@ exports.getUser = (req, res) => {
       return access_token;
     })
     .then(async (token) => {
-      const url = CONFIG.GITHUB.user_url ;
+      const url = CONFIG.GITHUB.user_url;
       // + "?access_token=" + token
       console.log("url:", url);
-      await fetch(url,{
-        headers:{
-          'Authorization':"token "+token
-        }
+      await fetch(url, {
+        headers: {
+          Authorization: "token " + token,
+        },
       })
         .then((res2) => {
           console.log("res2 :", res2);
@@ -65,14 +115,16 @@ exports.getUser = (req, res) => {
             //验证用户是否已经在数据库中
             User.findOne({ github_id: response.id })
               .then((userInfo) => {
-                console.log('userInfo :', userInfo);
+                console.log("userInfo :", userInfo);
                 if (userInfo) {
-                  console.log('11111')
+                  console.log("11111");
                   //登录成功后设置session
                   // req.session.userInfo = userInfo;
-                  res.status(200).send({data:userInfo,code:0,message:'登录成功'})
+                  res
+                    .status(200)
+                    .send({ data: userInfo, code: 0, message: "登录成功" });
                 } else {
-                  console.log('else')
+                  console.log("else");
                   let obj = {
                     github_id: response.id,
                     email: response.email,
@@ -92,7 +144,7 @@ exports.getUser = (req, res) => {
                 }
               })
               .catch((err) => {
-                responseClient(res,503,1,"出错", err);
+                responseClient(res, 503, 1, "出错", err);
                 return;
               });
           } else {
@@ -152,7 +204,8 @@ exports.currentUser = (req, res) => {
     user.country = "China";
     user.group = "包子窝";
     user.title = "前端萌新";
-    user.signature = "一个知识越贫乏的人，越是拥有一种莫名奇怪的勇气和自豪感，因为知识越贫乏，你所相信的东西就越绝对";
+    user.signature =
+      "一个知识越贫乏的人，越是拥有一种莫名奇怪的勇气和自豪感，因为知识越贫乏，你所相信的东西就越绝对";
     user.tags = [];
     user.geographic = {
       province: {
@@ -198,7 +251,7 @@ exports.loginAdmin = (req, res) => {
         if (userInfo.type === 0) {
           //登录成功后设置session
           req.session.userInfo = userInfo;
-          console.log(req.session)
+          console.log(req.session);
           responseClient(res, 200, 0, "登录成功", userInfo);
         } else {
           responseClient(res, 403, 1, "只有管理员才能登录后台！");

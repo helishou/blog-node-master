@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-05-26 19:46:35
- * @LastEditTime : 2021-06-04 23:18:54
+ * @LastEditTime : 2021-06-15 18:57:36
  * @LastEditors  : helishou
  * @Description  : 所有的路由接口主文件
  * @FilePath     : d:\desk\sakura\express\routes\index.js
@@ -25,6 +25,7 @@ module.exports = app => {
 	app.post('/register', user.register);
 	app.post('/delUser', user.delUser);
 	app.post('/getUser', user.getUser);
+	app.post('/getUserFront', user.getUserFront);
 	app.get('/currentUser', user.currentUser);
 	app.get('/getUserList', user.getUserList);
 	
