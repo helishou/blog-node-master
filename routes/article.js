@@ -496,7 +496,7 @@ exports.getArticleDetail = (req, res) => {
     Article.findOne({ _id: id }, (Error, data) => {
       if (Error) {
         console.error("Error:" + Error);
-        responseClient(res, 500, 0, Error);
+        responseClient(res, 500, 1, Error);
         // throw error;
       } else {
         if (data) {
