@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-06-02 18:59:20
- * @LastEditTime : 2021-06-15 19:41:24
+ * @LastEditTime : 2021-06-15 20:42:59
  * @LastEditors  : helishou
  * @Description  : 用户相关接口
  * @FilePath     : d:\desk\sakura\express\routes\user.js
@@ -149,25 +149,25 @@ exports.userInfo = (req, res) => {
 exports.currentUser = (req, res) => {
   let user = req.session.userInfo;
   if (user) {
-    user.avatar = "https://avatars.githubusercontent.com/u/41136716?v=4";
-    user.notifyCount = 0;
-    user.address = "浙江省";
-    user.country = "China";
-    user.group = "包子窝";
-    user.title = "前端萌新";
-    user.signature =
-      "一个知识越贫乏的人，越是拥有一种莫名奇怪的勇气和自豪感，因为知识越贫乏，你所相信的东西就越绝对";
-    user.tags = [];
-    user.geographic = {
-      province: {
-        label: "浙江省",
-        key: "300000",
-      },
-      city: {
-        label: "杭州市",
-        key: "300100",
-      },
-    };
+    // user.avatar = "https://avatars.githubusercontent.com/u/41136716?v=4";
+    // user.notifyCount = 0;
+    // user.address = "浙江省";
+    // user.country = "China";
+    // user.group = "包子窝";
+    // user.title = "前端萌新";
+    // user.signature =
+    //   "一个知识越贫乏的人，越是拥有一种莫名奇怪的勇气和自豪感，因为知识越贫乏，你所相信的东西就越绝对";
+    // user.tags = [];
+    // user.geographic = {
+    //   province: {
+    //     label: "浙江省",
+    //     key: "300000",
+    //   },
+    //   city: {
+    //     label: "杭州市",
+    //     key: "300100",
+    //   },
+    // };
     responseClient(res, 200, 0, "", user);
   } else {
     responseClient(res, 200, 1, "请重新登录", user);
@@ -219,12 +219,12 @@ exports.loginAdmin = (req, res) => {
 exports.register = (req, res) => {
   // let { name, password, phone, email, introduce, type } = req.body;
   let { name, password, phone, email, introduce, type } = {
-    name: "河狸兽",
-    password: "86699596",
-    email: "479525390@qq.com",
-    phone: 15659825289,
-    type: 0,
-    introduce: "你用你的指尖,阻止我说再见,在bug完全失去之前",
+    name: "游客",
+    password: "123456",
+    email: "user",
+    phone: 123456789,
+    type: 1,
+    introduce: "这家伙很懒，没有写签名",
   };
   if (!email) {
     responseClient(res, 400, 2, "用户邮箱不可为空");
