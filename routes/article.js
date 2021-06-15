@@ -496,7 +496,6 @@ exports.getArticleDetail = (req, res) => {
     Article.findOne({ _id: id }, (Error, data) => {
       if (Error) {
         console.error("Error:" + Error);
-        responseClient(res, 500, 3, Error);
         // throw error;
       } else {
         if (data) {
@@ -536,7 +535,6 @@ exports.getArticleDetail = (req, res) => {
     })
       .populate([{ path: "tags" }, { path: "category" }, { path: "comments" }])
       .exec((err, doc) => {
-        responseClient(res, 500, 3, err);
         // console.log("doc:");          // aikin
         // console.log("doc.tags:",doc.tags);          // aikin
         // console.log("doc.category:",doc.category);           // undefined
@@ -545,7 +543,6 @@ exports.getArticleDetail = (req, res) => {
     Article.findOne({ type: type }, (Error, data) => {
       if (Error) {
         console.log("Error:" + Error);
-        responseClient(res, 500, 3, Error);
         // throw error;
       } else {
         if (data) {
