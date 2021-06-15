@@ -572,7 +572,6 @@ exports.getArticleDetail = (req, res) => {
             })
             .catch((err) => {
               console.error("err :", err);
-              responseClient(res, 500, 3, err);
               throw err;
             });
         } else {
