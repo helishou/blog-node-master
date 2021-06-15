@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-06-02 18:59:20
- * @LastEditTime : 2021-06-15 19:06:01
+ * @LastEditTime : 2021-06-15 19:41:24
  * @LastEditors  : helishou
  * @Description  : 用户相关接口
  * @FilePath     : d:\desk\sakura\express\routes\user.js
@@ -15,56 +15,6 @@ import { MD5_SUFFIX, responseClient, md5 } from "../util/util.js";
 
 // 第三方授权登录的用户信息
 exports.getUser = (req, res) => {
-  // console.log("code", req, res);
-  let { response } = req.body;
-  if (!response) {
-    responseClient(res, 400, 2, "信息缺失");
-    return;
-  }
-  console.log("response ", response);
-  if (response.id) {
-    //验证用户是否已经在数据库中
-    User.findOne({ github_id: response.id })
-      .then((userInfo) => {
-        console.log("userInfo :", userInfo);
-        if (userInfo) {
-          // console.log("11111");
-          //登录成功后设置session
-          // req.session.userInfo = userInfo;
-          res
-            .status(200)
-            .send({ data: userInfo, code: 0, message: "登录成功" });
-        } else {
-          console.log("else");
-          let obj = {
-            github_id: response.id,
-            email: response.email,
-            password: response.login,
-            type: 2,
-            avatar: response.avatar_url,
-            name: response.login,
-            location: response.location,
-          };
-          //保存到数据库
-          let user = new User(obj);
-          user.save().then((data) => {
-            console.log("github:data :", data);
-            req.session.userInfo = data;
-            responseClient(res, 200, 0, "授权登录成功", data);
-          });
-        }
-      })
-      .catch((err) => {
-        responseClient(res, 503, 1, "出错", err);
-        return;
-      });
-  } else {
-    responseClient(res, 400, 1, "授权登录失败", response);
-  }
-};
-
-// 第三方授权登录的用户信息，前端版
-exports.getUserFront = (req, res) => {
   // console.log("code", req, res);
   let { code } = req.body;
   if (!code) {
@@ -86,6 +36,7 @@ exports.getUserFront = (req, res) => {
     body: JSON.stringify(params),
   })
     .then((res1) => {
+      console.log('res1',res1)
       return res1.text();
     })
     .then((body) => {

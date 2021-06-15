@@ -25,7 +25,6 @@ module.exports = app => {
 	app.post('/register', user.register);
 	app.post('/delUser', user.delUser);
 	app.post('/getUser', user.getUser);
-	app.post('/getUserFront', user.getUserFront);
 	app.get('/currentUser', user.currentUser);
 	app.get('/getUserList', user.getUserList);
 	
