@@ -496,6 +496,7 @@ exports.getArticleDetail = (req, res) => {
     Article.findOne({ _id: id }, (Error, data) => {
       if (Error) {
         console.error("Error:" + Error);
+        responseClient(res, 500, 0, Error);
         // throw error;
       } else {
         if (data) {
@@ -545,39 +546,34 @@ exports.getArticleDetail = (req, res) => {
         console.log("Error:" + Error);
         // throw error;
       } else {
-        if (data) {
-          data.meta.views = data.meta.views + 1;
-          Article.updateOne({ type: type }, { meta: data.meta })
-            .then((result) => {
-              if (filter === 1) {
-                const arr = data.comments;
-                for (let i = arr.length - 1; i >= 0; i--) {
-                  const e = arr[i];
-                  if (e.state !== 1) {
-                    arr.splice(i, 1);
-                  }
-                  const newArr = e.other_comments;
-                  const length = newArr.length;
-                  if (length) {
-                    for (let j = length - 1; j >= 0; j--) {
-                      const item = newArr[j];
-                      if (item.state !== 1) {
-                        newArr.splice(j, 1);
-                      }
+        data.meta.views = data.meta.views + 1;
+        Article.updateOne({ type: type }, { meta: data.meta })
+          .then((result) => {
+            if (filter === 1) {
+              const arr = data.comments;
+              for (let i = arr.length - 1; i >= 0; i--) {
+                const e = arr[i];
+                if (e.state !== 1) {
+                  arr.splice(i, 1);
+                }
+                const newArr = e.other_comments;
+                const length = newArr.length;
+                if (length) {
+                  for (let j = length - 1; j >= 0; j--) {
+                    const item = newArr[j];
+                    if (item.state !== 1) {
+                      newArr.splice(j, 1);
                     }
                   }
                 }
               }
-              responseClient(res, 200, 0, "操作成功 ！", data);
-            })
-            .catch((err) => {
-              console.error("err :", err);
-              throw err;
-            });
-        } else {
-          responseClient(res, 200, 1, "文章不存在 ！");
-          return;
-        }
+            }
+            responseClient(res, 200, 0, "操作成功 ！", data);
+          })
+          .catch((err) => {
+            console.error("err :", err);
+            throw err;
+          });
       }
     })
       .populate([{ path: "tags" }, { path: "category" }, { path: "comments" }])
