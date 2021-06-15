@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-06-02 18:59:20
- * @LastEditTime : 2021-06-15 20:42:59
+ * @LastEditTime : 2021-06-15 20:48:32
  * @LastEditors  : helishou
  * @Description  : 用户相关接口
  * @FilePath     : d:\desk\sakura\express\routes\user.js
@@ -233,10 +233,10 @@ exports.register = (req, res) => {
   const reg = new RegExp(
     "^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"
   ); //正则表达式
-  if (!reg.test(email)) {
-    responseClient(res, 400, 2, "请输入格式正确的邮箱！");
-    return;
-  }
+  // if (!reg.test(email)) {
+  //   responseClient(res, 400, 2, "请输入格式正确的邮箱！");
+  //   return;
+  // }
   if (!name) {
     responseClient(res, 400, 2, "用户名不可为空");
     return;
