@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-05-26 19:46:35
- * @LastEditTime : 2021-06-03 16:03:38
+ * @LastEditTime : 2021-06-15 21:02:47
  * @LastEditors  : helishou
  * @Description  : 标签接口
  * @FilePath     : d:\desk\sakura\express\routes\tag.js
@@ -12,6 +12,7 @@ import Tag from '../models/tag';
 
 //获取全部标签
 exports.getTagList = (req, res) => {
+  
   // console.log('req userInfo: ',req.cookies.userInfo)
   // console.log('req userInfo 2: ', unescape(req.cookies.userInfo));
   let keyword = req.query.keyword || null;
@@ -60,6 +61,10 @@ exports.getTagList = (req, res) => {
   });
 };
 exports.addTag = (req, res) => {
+  if (!req.session.userInfo) {
+    responseClient(res, 200, 1, "您还没登录,或者登录信息已过期，请重新登录！");
+    return;
+  }
   let { name, desc } = req.body;
   Tag.findOne({
     name,
@@ -87,6 +92,10 @@ exports.addTag = (req, res) => {
     });
 };
 exports.delTag = (req, res) => {
+  if (!req.session.userInfo) {
+    responseClient(res, 200, 1, "您还没登录,或者登录信息已过期，请重新登录！");
+    return;
+  }
   let { id } = req.body;
   Tag.deleteMany({ _id: id })
     .then(result => {

@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-06-02 18:59:20
- * @LastEditTime : 2021-06-15 20:48:32
+ * @LastEditTime : 2021-06-15 21:03:43
  * @LastEditors  : helishou
  * @Description  : 用户相关接口
  * @FilePath     : d:\desk\sakura\express\routes\user.js
@@ -149,28 +149,28 @@ exports.userInfo = (req, res) => {
 exports.currentUser = (req, res) => {
   let user = req.session.userInfo;
   if (user) {
-    // user.avatar = "https://avatars.githubusercontent.com/u/41136716?v=4";
-    // user.notifyCount = 0;
-    // user.address = "浙江省";
-    // user.country = "China";
-    // user.group = "包子窝";
-    // user.title = "前端萌新";
-    // user.signature =
-    //   "一个知识越贫乏的人，越是拥有一种莫名奇怪的勇气和自豪感，因为知识越贫乏，你所相信的东西就越绝对";
-    // user.tags = [];
-    // user.geographic = {
-    //   province: {
-    //     label: "浙江省",
-    //     key: "300000",
-    //   },
-    //   city: {
-    //     label: "杭州市",
-    //     key: "300100",
-    //   },
-    // };
+    user.avatar = "https://avatars.githubusercontent.com/u/41136716?v=4";
+    user.notifyCount = 0;
+    user.address = "浙江省";
+    user.country = "China";
+    user.group = "包子窝";
+    user.title = "前端萌新";
+    user.signature =
+      "一个知识越贫乏的人，越是拥有一种莫名奇怪的勇气和自豪感，因为知识越贫乏，你所相信的东西就越绝对";
+    user.tags = [];
+    user.geographic = {
+      province: {
+        label: "浙江省",
+        key: "300000",
+      },
+      city: {
+        label: "杭州市",
+        key: "300100",
+      },
+    };
     responseClient(res, 200, 0, "", user);
   } else {
-    responseClient(res, 200, 1, "请重新登录", user);
+    responseClient(res, 200, 1, "请用管理员账号重新登录", user);
   }
 };
 
@@ -205,7 +205,7 @@ exports.loginAdmin = (req, res) => {
           console.log(req.session);
           responseClient(res, 200, 0, "登录成功", userInfo);
         } else {
-          responseClient(res, 403, 1, "只有管理员才能登录后台！");
+          responseClient(res, 200, 1, "欢迎你，游客！");
         }
       } else {
         responseClient(res, 400, 1, "用户名或者密码错误");
@@ -272,6 +272,10 @@ exports.register = (req, res) => {
 };
 
 exports.delUser = (req, res) => {
+  if (!req.session.userInfo) {
+    responseClient(res, 200, 1, "您还没登录,或者登录信息已过期，请重新登录！");
+    return;
+  }
   let { id } = req.body;
   User.deleteMany({ _id: id })
     .then((result) => {

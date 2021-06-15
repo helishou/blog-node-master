@@ -1,3 +1,12 @@
+/*
+ * @Author       : helishou
+ * @Date         : 2021-05-26 19:46:35
+ * @LastEditTime : 2021-06-15 21:01:18
+ * @LastEditors  : helishou
+ * @Description  : 目录
+ * @FilePath     : d:\desk\sakura\express\routes\category.js
+ * 你用你的指尖,阻止我说再见,在bug完全失去之前
+ */
 import { responseClient } from '../util/util';
 import Category from '../models/category';
 
@@ -42,6 +51,10 @@ exports.getCategoryList = (req, res) => {
   });
 };
 exports.addCategory = (req, res) => {
+  if (!req.session.userInfo) {
+    responseClient(res, 200, 1, "您还没登录,或者登录信息已过期，请重新登录！");
+    return;
+  }
   let { name, desc } = req.body;
   Category.findOne({
     name,
@@ -70,6 +83,10 @@ exports.addCategory = (req, res) => {
     });
 };
 exports.delCategory = (req, res) => {
+  if (!req.session.userInfo) {
+    responseClient(res, 200, 1, "您还没登录,或者登录信息已过期，请重新登录！");
+    return;
+  }
   let { id } = req.body;
   Category.deleteMany({ _id: id })
     .then(result => {

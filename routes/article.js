@@ -4,7 +4,6 @@ import { responseClient, timestampToTime } from "../util/util";
 
 exports.addArticle = (req, res) => {
   if (!req.session.userInfo) {
-    console.log(req.session);
     responseClient(res, 200, 1, "您还没登录,或者登录信息已过期，请重新登录！");
     return;
   }
@@ -116,6 +115,10 @@ exports.updateArticle = (req, res) => {
 };
 
 exports.delArticle = (req, res) => {
+  if (!req.session.userInfo) {
+    responseClient(res, 200, 1, "您还没登录,或者登录信息已过期，请重新登录！");
+    return;
+  }
   let { id } = req.body;
   Article.deleteMany({ _id: id })
     .then((result) => {
@@ -133,6 +136,7 @@ exports.delArticle = (req, res) => {
 
 // 前台文章列表
 exports.getArticleList = (req, res) => {
+  
   let keyword = req.query.keyword || null;
   let state = req.query.state || "";
   let likes = req.query.likes || "";
