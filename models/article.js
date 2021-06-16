@@ -38,7 +38,7 @@ const articleSchema = new mongoose.Schema({
       "",
   },
 
-  // 文章类型 => 1: 普通文章，2: 简历，3: 管理员介绍
+  // 文章类型 => 1: 普通文章，2: 项目
   type: { type: Number, default: 1 },
 
   // 文章发布状态 => 0 草稿，1 已发布

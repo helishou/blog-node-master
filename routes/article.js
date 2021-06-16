@@ -136,9 +136,9 @@ exports.delArticle = (req, res) => {
 
 // 前台文章列表
 exports.getArticleList = (req, res) => {
-  
   let keyword = req.query.keyword || null;
   let state = req.query.state || "";
+  let type = req.query.type || 1;
   let likes = req.query.likes || "";
   let origin = req.query.origin || null;
   let tag_id = req.query.tag_id || "";
@@ -183,7 +183,9 @@ exports.getArticleList = (req, res) => {
     // 根据 分类 id 返回数据
     conditions = { $and: [{ category: category_id }, conditions] };
   }
-  console.log("conditions", conditions);
+  //根据 type 返回数据
+  conditions = { $and: [{ type: type }, conditions] };
+  // console.log("conditions", conditions);
   let skip = pageNum - 1 < 0 ? 0 : (pageNum - 1) * pageSize;
   let responseData = {
     count: 0,
@@ -193,7 +195,6 @@ exports.getArticleList = (req, res) => {
     if (err) {
       console.log("Error:" + err);
     } else {
-      responseData.count = count;
       // 待返回的字段
       let fields = {
         title: 1,
@@ -294,6 +295,7 @@ exports.getArticleList = (req, res) => {
           } else {
             responseData.list = result;
           }
+          responseData.count = responseData.list.length;
           responseClient(res, 200, 0, "操作成功！", responseData);
         }
       })
@@ -489,7 +491,7 @@ exports.getArticleDetailByType = (req, res) => {
 // 文章详情
 exports.getArticleDetail = (req, res) => {
   let { id } = req.body;
-  let type = Number(req.body.type) || 1; //文章类型 => 1: 普通文章，2: 简历，3: 管理员介绍
+  let type = Number(req.body.type) || 1; //文章类型 => 1: 普通文章，2: 项目
   let filter = Number(req.body.filter) || 1; //文章的评论过滤 => 1: 过滤，2: 不过滤
   // console.log('type:', type);
   if (type === 1) {
