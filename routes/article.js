@@ -151,6 +151,7 @@ exports.getArticleList = (req, res) => {
     pageSize = 1000;
   }
   let conditions = {};
+<<<<<<< HEAD
   if (keyword) {
     const reg = new RegExp(keyword, "i"); //不区分大小写
     conditions = {
@@ -160,6 +161,36 @@ exports.getArticleList = (req, res) => {
   let stateCondition={}
   if (state) {
     stateCondition = {state};
+=======
+  let stateCondition={}
+  if (!state) {
+    if (keyword) {
+      const reg = new RegExp(keyword, "i"); //不区分大小写
+      conditions = {
+        $or: [{ title: { $regex: reg } }, { desc: { $regex: reg } }],
+      };
+    }
+  } else if (state) {
+    stateCondition={state}
+    state = parseInt(state);
+    if (keyword) {
+      const reg = new RegExp(keyword, "i");
+      conditions = {
+        $and: [
+          { $or: [{ state: state }] },
+          {
+            $or: [
+              { title: { $regex: reg } },
+              { desc: { $regex: reg } },
+              { keyword: { $regex: reg } },
+            ],
+          },
+        ],
+      };
+    } else {
+      conditions = { state };
+    }
+>>>>>>> 43e851901e6b60a1bd4a5a81bc7891e4d345bf2a
   }
   if (category_id) {
     // console.log('category_id :', category_id);
@@ -175,10 +206,14 @@ exports.getArticleList = (req, res) => {
     list: [],
   };
 <<<<<<< HEAD
+<<<<<<< HEAD
   Article.countDocuments(stateCondition, (err, count) => {
 =======
   Article.countDocuments(state?{state}:{}, (err, count) => {
 >>>>>>> be46611d6c14da401fb2f08e0f2877404170a9cd
+=======
+  Article.countDocuments(stateCondition, (err, count) => {
+>>>>>>> 43e851901e6b60a1bd4a5a81bc7891e4d345bf2a
     if (err) {
       console.log("Error:" + err);
     } else {
