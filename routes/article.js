@@ -151,6 +151,7 @@ exports.getArticleList = (req, res) => {
     pageSize = 1000;
   }
   let conditions = {};
+  let stateCondition={}
   if (!state) {
     if (keyword) {
       const reg = new RegExp(keyword, "i"); //不区分大小写
@@ -159,6 +160,7 @@ exports.getArticleList = (req, res) => {
       };
     }
   } else if (state) {
+    stateCondition={state}
     state = parseInt(state);
     if (keyword) {
       const reg = new RegExp(keyword, "i");
@@ -191,7 +193,7 @@ exports.getArticleList = (req, res) => {
     count: 0,
     list: [],
   };
-  Article.countDocuments({}, (err, count) => {
+  Article.countDocuments(stateCondition, (err, count) => {
     if (err) {
       console.log("Error:" + err);
     } else {
