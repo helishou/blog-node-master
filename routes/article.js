@@ -151,32 +151,15 @@ exports.getArticleList = (req, res) => {
     pageSize = 1000;
   }
   let conditions = {};
-  if (!state) {
-    if (keyword) {
-      const reg = new RegExp(keyword, "i"); //不区分大小写
-      conditions = {
-        $or: [{ title: { $regex: reg } }, { desc: { $regex: reg } }],
-      };
-    }
-  } else if (state) {
-    state = parseInt(state);
-    if (keyword) {
-      const reg = new RegExp(keyword, "i");
-      conditions = {
-        $and: [
-          { $or: [{ state: state }] },
-          {
-            $or: [
-              { title: { $regex: reg } },
-              { desc: { $regex: reg } },
-              { keyword: { $regex: reg } },
-            ],
-          },
-        ],
-      };
-    } else {
-      conditions = { state };
-    }
+  if (keyword) {
+    const reg = new RegExp(keyword, "i"); //不区分大小写
+    conditions = {
+      $or: [{ title: { $regex: reg } }, { desc: { $regex: reg } }],
+    };
+  }
+  stateCondition={}
+  if (state) {
+    stateCondition = {state};
   }
   if (category_id) {
     // console.log('category_id :', category_id);
@@ -191,7 +174,7 @@ exports.getArticleList = (req, res) => {
     count: 0,
     list: [],
   };
-  Article.countDocuments({}, (err, count) => {
+  Article.countDocuments(stateCondition, (err, count) => {
     if (err) {
       console.log("Error:" + err);
     } else {
