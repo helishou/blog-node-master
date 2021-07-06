@@ -160,8 +160,8 @@ exports.getArticleList = (req, res) => {
       };
     }
   } else if (state) {
-    stateCondition={state}
     state = parseInt(state);
+    stateCondition={state}
     if (keyword) {
       const reg = new RegExp(keyword, "i");
       conditions = {
@@ -193,7 +193,7 @@ exports.getArticleList = (req, res) => {
     count: 0,
     list: [],
   };
-  Article.find(stateCondition).countDocuments({}, (err, count) => {
+  Article.countDocuments(stateCondition, (err, count) => {
     if (err) {
       console.log("Error:" + err);
     } else {
