@@ -157,7 +157,7 @@ exports.getArticleList = (req, res) => {
       $or: [{ title: { $regex: reg } }, { desc: { $regex: reg } }],
     };
   }
-  stateCondition={}
+  let stateCondition={}
   if (state) {
     stateCondition = {state};
   }
