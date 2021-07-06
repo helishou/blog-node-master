@@ -195,6 +195,7 @@ exports.getArticleList = (req, res) => {
     if (err) {
       console.log("Error:" + err);
     } else {
+      responseData.count = count;
       // 待返回的字段
       let fields = {
         title: 1,
