@@ -193,7 +193,7 @@ exports.getArticleList = (req, res) => {
     count: 0,
     list: [],
   };
-  Article.countDocuments({}, (err, count) => {
+  Article.find(stateCondition).countDocuments({}, (err, count) => {
     if (err) {
       console.log("Error:" + err);
     } else {
