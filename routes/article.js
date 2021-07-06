@@ -251,7 +251,7 @@ exports.getArticleList = (req, res) => {
               }
             });
             let len = newList.length;
-            responseData.realcount = len;
+            responseData.count = len;
             responseData.list = newList;
           } else if (origin !== null) {
             // console.log('tag_id :', tag_id);
@@ -262,8 +262,8 @@ exports.getArticleList = (req, res) => {
               }
             });
             let len = newList.length;
-            responseData.count = len;
-            responseData.list = newList;
+            // responseData.realcount = len;
+            // responseData.list = newList;
           } else if (article) {
             const archiveList = [];
             let obj = {};
@@ -295,7 +295,7 @@ exports.getArticleList = (req, res) => {
           } else {
             responseData.list = result;
           }
-          responseData.count = responseData.list.length;
+          responseData.realcount = responseData.list.length;
           responseClient(res, 200, 0, "操作成功！", responseData);
         }
       })
