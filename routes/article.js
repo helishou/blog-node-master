@@ -174,7 +174,11 @@ exports.getArticleList = (req, res) => {
     count: 0,
     list: [],
   };
+<<<<<<< HEAD
   Article.countDocuments(stateCondition, (err, count) => {
+=======
+  Article.countDocuments(state?{state}:{}, (err, count) => {
+>>>>>>> be46611d6c14da401fb2f08e0f2877404170a9cd
     if (err) {
       console.log("Error:" + err);
     } else {
