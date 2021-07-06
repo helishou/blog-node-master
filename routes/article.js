@@ -191,7 +191,7 @@ exports.getArticleList = (req, res) => {
     count: 0,
     list: [],
   };
-  Article.countDocuments({}, (err, count) => {
+  Article.countDocuments(state?{state}:{}, (err, count) => {
     if (err) {
       console.log("Error:" + err);
     } else {
