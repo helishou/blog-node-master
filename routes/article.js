@@ -251,7 +251,7 @@ exports.getArticleList = (req, res) => {
               }
             });
             let len = newList.length;
-            responseData.count = len;
+            responseData.realcount = len;
             responseData.list = newList;
           } else if (origin !== null) {
             // console.log('tag_id :', tag_id);
