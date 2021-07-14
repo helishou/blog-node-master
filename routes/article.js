@@ -21,12 +21,9 @@ const imgSaver = (url) => {
     fs.statSync(src + tempUrl);
     //如果可以执行到这里那么就表示存在了
     exit = true;
+    return url;
   } catch (e) {
     console.log('不存在路径',src+tempUrl)
-    // 不存在
-  }
-  if (!exist) {
-    console.log('111')
     let newWebp =
       "https://www.wangxinyang.xyz/cloudDisk/" +
       tempUrl +
@@ -39,9 +36,15 @@ const imgSaver = (url) => {
       imgSpider(newImgUrl);
     }
     return newWebp;
-  } else {
-    return url;
+    // 不存在
   }
+  console.log(exist)
+  // if (!exist) {
+  //   console.log('111')
+    
+  // } else {
+
+  // }
 };
 /**
  * @description : 将服务器图片删除
