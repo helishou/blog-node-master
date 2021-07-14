@@ -19,7 +19,7 @@ const imgSaver = (url) => {
   console.log('1111')
   // 检测服务器是否存在这个图片，如果存在返回原来url
   try {
-    fs.statSync(src + tempUrl);
+    fs.stat(src + tempUrl);
     //如果可以执行到这里那么就表示存在了
     exit = true;
     return url;
@@ -52,19 +52,19 @@ const imgDelete = (url) => {
   let tempUrl = url.split("/");
   tempUrl = tempUrl[tempUrl.length - 1];
   try {
-    fs.statSync(src + tempUrl);
+    fs.stat(src + tempUrl);
     //如果可以执行到这里那么就表示存在了
     try {
-      fs.unlinkSync(src + tempUrl);
-      fs.unlinkSync(src + tempUrl.slice(0, tempUrl.length - 5));
+      fs.unlink(src + tempUrl);
+      fs.unlink(src + tempUrl.slice(0, tempUrl.length - 5));
     } catch (e) {}
     if (tempUrl.indexOf("small") != -1) {
       //说明可以放大
       let newImgUrl = tempUrl.replace("small", "");
       newImgUrl = newImgUrl.slice(0, 32) + ".jpg";
       try {
-        fs.unlinkSync(src + newImgUrl);
-        fs.unlinkSync(src + newImgUrl + ".webp");
+        fs.unlink(src + newImgUrl);
+        fs.unlink(src + newImgUrl + ".webp");
       } catch (e) {}
     }
   } catch (e) {
