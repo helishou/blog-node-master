@@ -163,11 +163,7 @@ exports.updateArticle = (req, res) => {
     origin,
     id,
   } = req.body;
-  try {
-    img_url = imgSaver(img_url);
-  } catch (e) {
-    console.log("article-webp转换失败");
-  }
+  img_url = imgSaver(img_url);
   console.log('continue')
   Article.update(
     { _id: id },
