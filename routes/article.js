@@ -27,7 +27,7 @@ const imgSaver = (url) => {
   if (!exist) {
     let newWebp =
       "https://www.wangxinyang.xyz/cloudDisk/" +
-      tempArr[tempArr.length - 1] +
+      tempUrl +
       ".webp";
     imgSpider(url, src); //服务器的保存目录I是大写
     if (tempUrl.indexOf("small") != -1) {
