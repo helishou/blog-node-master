@@ -31,10 +31,7 @@ let src = "/www/wwwroot/blog/cloudDisk/";
         newImgUrl = newImgUrl.slice(0, newImgUrl.length - 14) + ".jpg";
         imgSpider(newImgUrl, src);
       }
-      return newWebp;
-    } else {
-      return url;
-    }
+    } 
   });
   return exit?url:newWebp
 };
@@ -82,13 +79,13 @@ exports.addArticle = (req, res) => {
     keyword,
     content,
     desc,
-    img_url,
     tags,
     category,
     state,
     type,
     origin,
   } = req.body;
+  let {img_url} =req.body
   try {
     img_url = imgSaver(img_url);
   } catch (e) {
@@ -154,7 +151,6 @@ exports.updateArticle = (req, res) => {
     keyword,
     content,
     desc,
-    img_url,
     tags,
     category,
     state,
@@ -162,11 +158,8 @@ exports.updateArticle = (req, res) => {
     origin,
     id,
   } = req.body;
-  try {
-    img_url = imgSaver(img_url);
-  } catch (e) {
-    console.log("22");
-  }
+  let {img_url}=req.body
+  img_url = imgSaver(img_url);
   console.log("continue");
   console.log(img_url);
   Article.update(
