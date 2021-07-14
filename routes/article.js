@@ -12,7 +12,6 @@ let src = "/www/wwwroot/blog/cloudDisk/";
  * @return       {string} newWebp
  */
  const imgSaver = (url) => {
-  let newWebp = url;
   let tempUrl = url.split("/");
   tempUrl = tempUrl[tempUrl.length - 1];
   console.log("tempUrl", src + tempUrl);
@@ -20,7 +19,6 @@ let src = "/www/wwwroot/blog/cloudDisk/";
   fs.access(src + tempUrl, fs.constants.F_OK, (err) => {
     if (err) {
       console.log("不存在路径", src + tempUrl);
-      newWebp = "https://www.wangxinyang.xyz/cloudDisk/" + tempUrl + ".webp";
       imgSpider(url, src); //服务器的保存目录I是大写
       if (tempUrl.indexOf("small") != -1) {
         //说明可以放大
@@ -30,7 +28,7 @@ let src = "/www/wwwroot/blog/cloudDisk/";
       }
     }
   });
-  return newWebp
+  return "https://www.wangxinyang.xyz/cloudDisk/" + tempUrl + ".webp"
 };
 /**
  * @description : 将服务器图片删除

@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-14 19:47:12
- * @LastEditTime : 2021-07-14 20:34:20
+ * @LastEditTime : 2021-07-14 20:52:59
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\ttt.js
@@ -23,7 +23,7 @@ const imgSaver = (url) => {
   fs.access(src + tempUrl, fs.constants.F_OK, (err) => {
     if (err) {
       console.log("不存在路径", src + tempUrl);
-      newWebp = "https://www.wangxinyang.xyz/cloudDisk/" + tempUrl + ".webp";
+    //   newWebp = "https://www.wangxinyang.xyz/cloudDisk/" + tempUrl + ".webp";
       imgSpider(url, src); //服务器的保存目录I是大写
       if (tempUrl.indexOf("small") != -1) {
         //说明可以放大
@@ -33,7 +33,7 @@ const imgSaver = (url) => {
       }
     }
   });
-  return newWebp
+  return "https://www.wangxinyang.xyz/cloudDisk/" + tempUrl + ".webp"
 };
 const value = imgSaver(
   "http://img.netbian.com/file/2020/1113/small6726872bddca923ccad6f4ec40d3c9f11605282585.jpg"
