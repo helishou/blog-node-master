@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-13 23:46:18
- * @LastEditTime : 2021-07-14 19:05:33
+ * @LastEditTime : 2021-07-14 19:20:10
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\imgSpider.js
@@ -74,6 +74,7 @@ function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2) {
  * @return       {undefined}
  */
 const imgToWebp=(dest)=>{
+  console.log(dest)
   const result = webp.cwebp(
     dest,
     dest + ".webp",
