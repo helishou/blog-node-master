@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-14 14:50:50
- * @LastEditTime : 2021-07-14 17:12:41
+ * @LastEditTime : 2021-07-14 17:13:26
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\test.js
@@ -13,7 +13,7 @@ const mongodb = require("../core/mongodb");
 // data server
 mongodb.connect();
 const mongoose = mongodb.mongoose;
-const Article = require("../../models/article");
+const Article = require("../models/article");
 updateArticle = () => {
   Article.find(
     {},
