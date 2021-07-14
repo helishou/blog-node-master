@@ -22,6 +22,8 @@ const imgSaver = (url) => {
     //如果可以执行到这里那么就表示存在了
     exit = true;
   } catch (e) {
+    console.log(e)
+    console.log('不存在路径',src+tempUrl)
     // 不存在
   }
   if (!exist) {
