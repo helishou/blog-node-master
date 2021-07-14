@@ -11,7 +11,7 @@ let src = "/www/wwwroot/blog/cloudDisk/";
  * @param        {string} url
  * @return       {string} newWebp
  */
-const imgSaver = (url) => {
+ const imgSaver = (url) => {
   let newImgUrl;
   let tempUrl = url.split("/");
   tempUrl = tempUrl[tempUrl.length - 1];
@@ -26,13 +26,13 @@ const imgSaver = (url) => {
       imgSpider(url, src); //服务器的保存目录I是大写
       if (tempUrl.indexOf("small") != -1) {
         //说明可以放大
-        let newImgUrl = tempUrl.replace("small", "");
+        let newImgUrl = url.replace("small", "");
         newImgUrl = newImgUrl.slice(0, newImgUrl.length - 14) + ".jpg";
         imgSpider(newImgUrl, src);
       }
-      return newWebp;
+    //   return newWebp;
     } else {
-      return url;
+    //   return url;
     }
   });
 };
