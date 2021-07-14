@@ -16,7 +16,7 @@ const imgSaver = (url) => {
   let tempUrl = url.split("/");
   tempUrl = tempUrl[tempUrl.length - 1];
   let exit = false;
-  console.log('1111')
+  console.log('tempUrl',src+tempUrl)
   // 检测服务器是否存在这个图片，如果存在返回原来url
   try {
     fs.stat(src + tempUrl);
