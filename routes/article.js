@@ -18,7 +18,8 @@ let src = "/www/wwwroot/blog/cloudDisk/";
   let exit = false;
   console.log("tempUrl", src + tempUrl);
   // 检测服务器是否存在这个图片，如果存在返回原来url
-  fs.access(src + tempUrl, fs.constants.F_OK, (err) => {
+  newPromise((resolve,reject)=>{
+    fs.access(src + tempUrl, fs.constants.F_OK, (err) => {
     if (err) {
       console.log("不存在路径", src + tempUrl);
       newWebp =
@@ -30,12 +31,13 @@ let src = "/www/wwwroot/blog/cloudDisk/";
         newImgUrl = newImgUrl.slice(0, newImgUrl.length - 14) + ".jpg";
         imgSpider(newImgUrl, src);
       }
+      resolve(newWebp)
     } else{
-      exit=true
+      resolve(url)
     }
-  });
-  console.log(url,newWebp)
-  return exit?url:newWebp
+  });}).then((value)=>{
+    return value
+  })
 };
 /**
  * @description : 将服务器图片删除

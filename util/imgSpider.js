@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-13 23:46:18
- * @LastEditTime : 2021-07-14 19:53:05
+ * @LastEditTime : 2021-07-14 20:26:02
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\imgSpider.js
@@ -56,13 +56,9 @@ function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2) {
   });
   req.on("finish", () => {
     // console.log(dest);
-    setTimeout(()=>{
-      try{
-        imgToWebp(dest)
-      }catch(e){
-        console.log('imgspider-webp转换失败')
-      }
-    },5000)
+    setTimeout(
+      imgToWebp(dest)
+    ,2000)
   });
   req.end();
   return "https://www.wangxinyang.xyz/cloudDisk/" +dest+'.webp'
