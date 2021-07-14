@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-13 23:46:18
- * @LastEditTime : 2021-07-14 20:41:58
+ * @LastEditTime : 2021-07-14 20:47:10
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\imgSpider.js
@@ -69,7 +69,11 @@ function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2) {
  */
 const imgToWebp = (dest) => {
   console.log(dest);
-  const result = webp.cwebp(dest, dest + ".webp", "-q 80", (logging = "-v"));
+  let qulity=80
+  if(dest.indexOf('small')!=-1){
+    qulity=30
+  }
+  const result = webp.cwebp(dest, dest + ".webp", "-q "+qulity);
   result.then((response) => {
     // console.log(response);
   });
