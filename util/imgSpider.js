@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-13 23:46:18
- * @LastEditTime : 2021-07-14 20:26:02
+ * @LastEditTime : 2021-07-14 20:36:49
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\imgSpider.js
@@ -29,17 +29,21 @@ function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2) {
   // .webp()
   // .pipe(someWritableStream);
   // console.log(url)
-  let tempArr=url.split("/")
-  dest = dest + tempArr[tempArr.length-1];
-  console.log('保存在：',dest)
+  let tempArr = url.split("/");
+  dest = dest + tempArr[tempArr.length - 1];
+  console.log("保存在：", dest);
   let isRetry = false;
-  let req = http.request(url, (res) => res.pipe(fs.createWriteStream(dest)));
+  let req = http.request(url, (res) =>
+    res.pipe(fs.createWriteStream(dest)).on("finish", function () {
+      imgToWebp(dest);
+    })
+  );
   req.setTimeout(timeout, () => {
     req.abort();
     isRetry = true;
   });
   req.setHeader("User-Agent", userAgent);
-  req.setHeader("Referer", 'http://www.netbian.com/');
+  req.setHeader("Referer", "http://www.netbian.com/");
   req.setHeader("Cookie", cookie);
   req.setHeader("Host", host);
   // req.setHeader("If-Modified-Since", 'Thu, 08 Jul 2021 14:09:02 GMT');
@@ -47,43 +51,31 @@ function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2) {
   // console.log(req)
   req.on("error", () => {
     isRetry = true;
-    console.log('失败',url)
+    console.log("失败", url);
   });
   req.on("close", () => {
     // 重试时，将超时时间递增 1 分钟
     if (isRetry && retries > 0)
-    imgSpider(url, dest, timeout + 60 * 1000, retries - 1);
-  });
-  req.on("finish", () => {
-    // console.log(dest);
-    setTimeout(
-      imgToWebp(dest)
-    ,2000)
+      imgSpider(url, dest, timeout + 60 * 1000, retries - 1);
   });
   req.end();
-  return "https://www.wangxinyang.xyz/cloudDisk/" +dest+'.webp'
+  return "https://www.wangxinyang.xyz/cloudDisk/" + dest + ".webp";
 }
 
 /**
- * @description : 
+ * @description :
  * @param        {string} dest图片路径
  * @return       {undefined}
  */
-const imgToWebp=(dest)=>{
-  console.log(dest)
-  const result = webp.cwebp(
-    dest,
-    dest + ".webp",
-    "-q 80",
-    (logging = "-v")
-  );
+const imgToWebp = (dest) => {
+  console.log(dest);
+  const result = webp.cwebp(dest, dest + ".webp", "-q 80", (logging = "-v"));
   result.then((response) => {
     // console.log(response);
   });
-}
+};
 
-
-module.exports=imgSpider
+module.exports = imgSpider;
 // getCookie(
 //   "http://img.netbian.com/file/2021/0708/small328c217f576e240194847ad9c56e73741625753341.jpg"
 // );

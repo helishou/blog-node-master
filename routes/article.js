@@ -12,18 +12,15 @@ let src = "/www/wwwroot/blog/cloudDisk/";
  * @return       {string} newWebp
  */
  const imgSaver = (url) => {
-  let newWebp
+  let newWebp = url;
   let tempUrl = url.split("/");
   tempUrl = tempUrl[tempUrl.length - 1];
-  let exit = false;
   console.log("tempUrl", src + tempUrl);
   // 检测服务器是否存在这个图片，如果存在返回原来url
-  newPromise((resolve,reject)=>{
-    fs.access(src + tempUrl, fs.constants.F_OK, (err) => {
+  fs.access(src + tempUrl, fs.constants.F_OK, (err) => {
     if (err) {
       console.log("不存在路径", src + tempUrl);
-      newWebp =
-        "https://www.wangxinyang.xyz/cloudDisk/" + tempUrl + ".webp";
+      newWebp = "https://www.wangxinyang.xyz/cloudDisk/" + tempUrl + ".webp";
       imgSpider(url, src); //服务器的保存目录I是大写
       if (tempUrl.indexOf("small") != -1) {
         //说明可以放大
@@ -31,13 +28,9 @@ let src = "/www/wwwroot/blog/cloudDisk/";
         newImgUrl = newImgUrl.slice(0, newImgUrl.length - 14) + ".jpg";
         imgSpider(newImgUrl, src);
       }
-      resolve(newWebp)
-    } else{
-      resolve(url)
     }
-  });}).then((value)=>{
-    return value
-  })
+  });
+  return newWebp
 };
 /**
  * @description : 将服务器图片删除
@@ -89,7 +82,7 @@ exports.addArticle = (req, res) => {
     type,
     origin,
   } = req.body;
-  let {img_url} =req.body
+  let { img_url } = req.body;
   try {
     img_url = imgSaver(img_url);
   } catch (e) {
@@ -162,8 +155,8 @@ exports.updateArticle = (req, res) => {
     origin,
     id,
   } = req.body;
-  let {img_url}=req.body
-  img_url = imgSaver(img_url);
+  let { img_url } = req.body;
+  img_url =await imgSaver(img_url);
   console.log("continue");
   console.log(img_url);
   Article.update(
