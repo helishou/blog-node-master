@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-14 19:25:11
- * @LastEditTime : 2021-07-14 19:26:42
+ * @LastEditTime : 2021-07-14 19:27:39
  * @LastEditors  : helishou
  * @Description  : 
  * @FilePath     : \util\liuxTest.js
@@ -11,6 +11,7 @@ const fs = require("fs");
 const imgSpider = require("./imgSpider");
 src='/www/wwwroot/blog/cloudDisk/'
 tempUrl='smallf27b49517d6436c5bdc301fd711631e41625305469.jpg'
+url=''
 try {
     fs.stat(src + tempUrl);
     //如果可以执行到这里那么就表示存在了
