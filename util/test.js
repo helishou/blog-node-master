@@ -1,15 +1,15 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-14 14:50:50
- * @LastEditTime : 2021-07-14 16:59:16
+ * @LastEditTime : 2021-07-14 17:12:41
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\test.js
  * 你用你的指尖,阻止我说再见,在bug完全失去之前
  */
 
-const imgSpider = require("./../imgSpider");
-const mongodb = require("../../core/mongodb");
+const imgSpider = require("./imgSpider");
+const mongodb = require("../core/mongodb");
 // data server
 mongodb.connect();
 const mongoose = mongodb.mongoose;
