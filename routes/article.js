@@ -148,11 +148,11 @@ exports.addArticle = (req, res) => {
 };
 
 exports.updateArticle = (req, res) => {
-  if (!req.session.userInfo) {
-    console.log(req.session);
-    responseClient(res, 200, 1, "您还没登录,或者登录信息已过期，请重新登录！");
-    return;
-  }
+  // if (!req.session.userInfo) {
+  //   console.log(req.session);
+  //   responseClient(res, 200, 1, "您还没登录,或者登录信息已过期，请重新登录！");
+  //   return;
+  // }
   const {
     title,
     author,
