@@ -20,7 +20,6 @@ let src = "/www/wwwroot/blog/cloudDisk/";
   // 检测服务器是否存在这个图片，如果存在返回原来url
   fs.access(src + tempUrl, fs.constants.F_OK, (err) => {
     if (err) {
-      exit=true
       console.log("不存在路径", src + tempUrl);
       newWebp =
         "https://www.wangxinyang.xyz/cloudDisk/" + tempUrl + ".webp";
@@ -31,7 +30,9 @@ let src = "/www/wwwroot/blog/cloudDisk/";
         newImgUrl = newImgUrl.slice(0, newImgUrl.length - 14) + ".jpg";
         imgSpider(newImgUrl, src);
       }
-    } 
+    } else{
+      exit=true
+    }
   });
   console.log(url,newWebp)
   return exit?url:newWebp
