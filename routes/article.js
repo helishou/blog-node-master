@@ -30,9 +30,9 @@ let src = "/www/wwwroot/blog/cloudDisk/";
         newImgUrl = newImgUrl.slice(0, newImgUrl.length - 14) + ".jpg";
         imgSpider(newImgUrl, src);
       }
-    //   return newWebp;
+      return newWebp;
     } else {
-    //   return url;
+      return url;
     }
   });
 };
