@@ -1,6 +1,80 @@
 import Article from "../models/article";
 import User from "../models/user";
 import { responseClient, timestampToTime } from "../util/util";
+import imgSpider from "../util/imgSpider";
+var fs = require("fs");
+
+let src = "/www/wwwroot/blog/cloudDIsk/";
+//图片目录
+/**
+ * @description : 将网络图片存到服务器
+ * @param        {string} url
+ * @return       {string} newWebp
+ */
+const imgSaver = (url) => {
+  let newImgUrl;
+  let tempUrl = url.split("/");
+  tempUrl=tempUrl[tempUrl.length - 1]
+  let exit = false;
+  // 检测服务器是否存在这个图片，如果存在返回原来url
+  try {
+    fs.statSync(src + tempUrl);
+    //如果可以执行到这里那么就表示存在了
+    exit = true;
+  } catch (e) {
+    // 不存在
+  }
+  if (!exist) {
+    let newWebp =
+      "https://www.wangxinyang.xyz/cloudDIsk/" +
+      tempArr[tempArr.length - 1] +
+      ".webp";
+    imgSpider(url, src); //服务器的保存目录I是大写
+    if(tempUrl.indexOf('small')!=-1){//说明可以放大
+      let newImgUrl = tempUrl.replace("small", "");
+      newImgUrl = newImgUrl.slice(0, newImgUrl.length - 14) + ".jpg";
+      imgSpider(newImgUrl)
+    }
+    return newWebp;
+  } else {
+    return url;
+  }
+};
+/**
+ * @description : 将服务器图片删除
+ * @param        {string} url
+ * @return       {undefined} 
+ */
+const imgDelete = (url) => {
+  if(typeof url!=="string"){
+    return
+  }
+  let tempUrl = url.split("/");
+  tempUrl=tempUrl[tempUrl.length - 1]
+  try {
+    fs.statSync(src + tempUrl);
+    //如果可以执行到这里那么就表示存在了
+    try{
+      fs.unlinkSync(src + tempUrl)
+      fs.unlinkSync(src + tempUrl.slice(0,tempUrl.length-5))
+    }catch(e){
+    }
+    if(tempUrl.indexOf('small')!=-1){//说明可以放大
+      let newImgUrl = tempUrl.replace("small", "");
+      newImgUrl = newImgUrl.slice(0, 32) + ".jpg";
+      try{
+        fs.unlinkSync(src + newImgUrl)
+        fs.unlinkSync(src + newImgUrl+'.webp')
+      }catch(e){
+        
+      }
+    }
+  } catch (e) {
+    // 不存在
+    console.log(e)
+  }
+  
+};
 
 exports.addArticle = (req, res) => {
   if (!req.session.userInfo) {
@@ -20,6 +94,11 @@ exports.addArticle = (req, res) => {
     type,
     origin,
   } = req.body;
+  try {
+    img_url = imgSaver(img_url);
+  } catch {
+    console.log("webp转换失败");
+  }
   let tempArticle = null;
   if (img_url) {
     tempArticle = new Article({
@@ -88,6 +167,11 @@ exports.updateArticle = (req, res) => {
     origin,
     id,
   } = req.body;
+  try {
+    img_url = imgSaver(img_url);
+  } catch {
+    console.log("webp转换失败");
+  }
   Article.update(
     { _id: id },
     {
@@ -120,6 +204,18 @@ exports.delArticle = (req, res) => {
     return;
   }
   let { id } = req.body;
+  Article.find(
+    {_id:id},
+    {
+      img_url: 1,
+    },
+    (error, result) => {
+      for (let i = 0; i < result.length; i++) {
+        // s删除服务器上的图
+        imgDelete(result[i].img_url)
+      }
+    }
+  );
   Article.deleteMany({ _id: id })
     .then((result) => {
       if (result.n === 1) {
@@ -151,7 +247,7 @@ exports.getArticleList = (req, res) => {
     pageSize = 1000;
   }
   let conditions = {};
-  let stateCondition={}
+  let stateCondition = {};
   if (!state) {
     if (keyword) {
       const reg = new RegExp(keyword, "i"); //不区分大小写
@@ -161,7 +257,7 @@ exports.getArticleList = (req, res) => {
     }
   } else if (state) {
     state = parseInt(state);
-    stateCondition={state}
+    stateCondition = { state };
     if (keyword) {
       const reg = new RegExp(keyword, "i");
       conditions = {
