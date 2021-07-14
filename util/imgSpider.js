@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-13 23:46:18
- * @LastEditTime : 2021-07-14 14:50:22
+ * @LastEditTime : 2021-07-14 15:47:47
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\imgSpider.js
@@ -28,7 +28,9 @@ function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2) {
   // imageProcessing
   // .webp()
   // .pipe(someWritableStream);
-  dest = dest + url.split("file")[1].split("/")[3];
+  // console.log(url)
+  let tempArr=url.split("/")
+  dest = dest + tempArr[tempArr.length-1];
   let isRetry = false;
   let req = http.request(url, (res) => res.pipe(fs.createWriteStream(dest)));
   req.setTimeout(timeout, () => {
@@ -52,7 +54,11 @@ function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2) {
   });
   req.on("finish", () => {
     console.log(dest);
-    imgToWebp(dest)
+    try{
+      imgToWebp(dest)
+    }catch{
+      console.log('转换失败',dest)
+    }
   });
   req.end();
 }
@@ -75,7 +81,7 @@ imgToWebp=(dest)=>{
 }
 
 
-exports=imgSpider
+module.exports=imgSpider
 // getCookie(
 //   "http://img.netbian.com/file/2021/0708/small328c217f576e240194847ad9c56e73741625753341.jpg"
 // );

@@ -1,10 +1,10 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-05-26 19:50:12
- * @LastEditTime : 2021-06-10 15:05:51
+ * @LastEditTime : 2021-07-14 15:25:30
  * @LastEditors  : helishou
  * @Description  : 文章数据模型
- * @FilePath     : d:\desk\sakura\express\models\article.js
+ * @FilePath     : \models\article.js
  * 你用你的指尖,阻止我说再见,在bug完全失去之前
  */
 
@@ -103,6 +103,6 @@ articleSchema.plugin(autoIncrement.plugin, {
   startAt: 1,
   incrementBy: 1,
 });
-
+// autoIncrement.initialize(mongoose.connect); 
 // 文章模型
 module.exports = mongoose.model("Article", articleSchema);
