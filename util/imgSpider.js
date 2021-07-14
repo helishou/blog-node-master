@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-13 23:46:18
- * @LastEditTime : 2021-07-14 16:30:40
+ * @LastEditTime : 2021-07-14 17:20:15
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\imgSpider.js
@@ -56,7 +56,7 @@ function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2) {
     console.log(dest);
     try{
       imgToWebp(dest)
-    }catch{
+    }catch(e){
       console.log('转换失败',dest)
     }
   });
@@ -68,7 +68,7 @@ function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2) {
  * @param        {string} dest图片路径
  * @return       {undefined}
  */
-imgToWebp=(dest)=>{
+const imgToWebp=(dest)=>{
   const result = webp.cwebp(
     dest,
     dest + ".webp",
