@@ -16,29 +16,25 @@ const imgSaver = (url) => {
   let tempUrl = url.split("/");
   tempUrl = tempUrl[tempUrl.length - 1];
   let exit = false;
-  console.log('tempUrl',src+tempUrl)
+  console.log("tempUrl", src + tempUrl);
   // 检测服务器是否存在这个图片，如果存在返回原来url
-  try {
-    fs.stat(src + tempUrl);
-    //如果可以执行到这里那么就表示存在了
-    exit = true;
-    return url;
-  } catch (e) {
-    console.log('不存在路径',src+tempUrl)
-    let newWebp =
-      "https://www.wangxinyang.xyz/cloudDisk/" +
-      tempUrl +
-      ".webp";
-    imgSpider(url, src); //服务器的保存目录I是大写
-    if (tempUrl.indexOf("small") != -1) {
-      //说明可以放大
-      let newImgUrl = tempUrl.replace("small", "");
-      newImgUrl = newImgUrl.slice(0, newImgUrl.length - 14) + ".jpg";
-      imgSpider(newImgUrl,src);
+  fs.access(src + tempUrl, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.log("不存在路径", src + tempUrl);
+      let newWebp =
+        "https://www.wangxinyang.xyz/cloudDisk/" + tempUrl + ".webp";
+      imgSpider(url, src); //服务器的保存目录I是大写
+      if (tempUrl.indexOf("small") != -1) {
+        //说明可以放大
+        let newImgUrl = tempUrl.replace("small", "");
+        newImgUrl = newImgUrl.slice(0, newImgUrl.length - 14) + ".jpg";
+        imgSpider(newImgUrl, src);
+      }
+      return newWebp;
+    } else {
+      return url;
     }
-    return newWebp;
-    // 不存在
-  }
+  });
 };
 /**
  * @description : 将服务器图片删除
@@ -164,13 +160,13 @@ exports.updateArticle = (req, res) => {
     origin,
     id,
   } = req.body;
-  try{
+  try {
     img_url = imgSaver(img_url);
-  }catch(e){
-    console.log('22')
+  } catch (e) {
+    console.log("22");
   }
-  console.log('continue')
-  console.log(img_url)
+  console.log("continue");
+  console.log(img_url);
   Article.update(
     { _id: id },
     {
