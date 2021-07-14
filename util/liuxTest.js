@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-14 19:25:11
- * @LastEditTime : 2021-07-14 19:27:39
+ * @LastEditTime : 2021-07-14 19:30:13
  * @LastEditors  : helishou
  * @Description  : 
  * @FilePath     : \util\liuxTest.js
@@ -15,7 +15,6 @@ url=''
 try {
     fs.stat(src + tempUrl);
     //如果可以执行到这里那么就表示存在了
-    exit = true;
     return url;
   } catch (e) {
     console.log('不存在路径',src+tempUrl)
