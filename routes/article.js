@@ -16,6 +16,7 @@ const imgSaver = (url) => {
   let tempUrl = url.split("/");
   tempUrl = tempUrl[tempUrl.length - 1];
   let exit = false;
+  console.log('1111')
   // 检测服务器是否存在这个图片，如果存在返回原来url
   try {
     fs.statSync(src + tempUrl);
@@ -163,8 +164,13 @@ exports.updateArticle = (req, res) => {
     origin,
     id,
   } = req.body;
-  img_url = imgSaver(img_url);
+  try{
+    img_url = imgSaver(img_url);
+  }catch(e){
+    console.log('22')
+  }
   console.log('continue')
+  console.log(img_url)
   Article.update(
     { _id: id },
     {
