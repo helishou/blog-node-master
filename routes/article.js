@@ -4,7 +4,7 @@ import { responseClient, timestampToTime } from "../util/util";
 const imgSpider = require("../util/imgSpider");
 var fs = require("fs");
 
-let src = "/www/wwwroot/blog/cloudDIsk/";
+let src = "/www/wwwroot/blog/cloudDisk/";
 //图片目录
 /**
  * @description : 将网络图片存到服务器
@@ -26,7 +26,7 @@ const imgSaver = (url) => {
   }
   if (!exist) {
     let newWebp =
-      "https://www.wangxinyang.xyz/cloudDIsk/" +
+      "https://www.wangxinyang.xyz/cloudDisk/" +
       tempArr[tempArr.length - 1] +
       ".webp";
     imgSpider(url, src); //服务器的保存目录I是大写

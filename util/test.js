@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-14 14:50:50
- * @LastEditTime : 2021-07-14 17:13:26
+ * @LastEditTime : 2021-07-14 17:55:45
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\test.js
@@ -29,48 +29,34 @@ updateArticle = () => {
           result[i].img_url.indexOf("jpg") != -1
         ) {
           let newImgUrl;
-          let tempArr = result[i].img_url.split("/");
-          let newWebp =
-            "https://www.wangxinyang.xyz/cloudDIsk/" +
-            tempArr[tempArr.length - 1] +
-            ".webp";
           //   console.log(newWebp)
-          Article.findOneAndUpdate(
-            { img_url: result[i].img_url },
-            { img_url: newWebp },
-            (err, res) => {
-              console.log(res, "成功");
-            }
-          );
+          if (result[i].img_url.indexOf("small") != -1) {
+            newImgUrl = result[i].img_url.replace("small", "");
+            newImgUrl = newImgUrl.slice(0, newImgUrl.length - 14) + ".jpg";
+            console.log("可以放大", newImgUrl);
+            let newUrl = imgSpider(result[i].img_url);
+            Article.findOneAndUpdate(
+              { img_url: result[i].img_url },
+              { img_url: newUrl },
+              (err, res) => {
+                console.log(result[i].img_url, "成功");
+              }
+            );
+            imgSpider(newImgUrl);
+          } else {
+            let newUrl =imgSpider(result[i].img_url);
+            Article.findOneAndUpdate(
+              { img_url: result[i].img_url },
+              { img_url: newUrl },
+              (err, res) => {
+                console.log(result[i].img_url, "成功");
+              }
+            );
+            console.log("不可放大", result[i].img_url);
+          }
         }
       }
     }
   );
-
-  // update(
-  //   { _id: id },
-  //   {
-  //     title,
-  //     author,
-  //     keyword: keyword ? keyword.split(",") : [],
-  //     content,
-  //     desc,
-  //     img_url,
-  //     tags: tags ? tags.split(",") : [],
-  //     category: category ? category.split(",") : [],
-  //     state,
-  //     type,
-  //     origin,
-  //     update_time: Date.now(),
-  //   }
-  // )
-  //   .then((result) => {
-
-  //   })
-  //   .catch((err) => {
-  //     console.error(err);
-
-  //   });
 };
 updateArticle();
-
