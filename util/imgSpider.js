@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-13 23:46:18
- * @LastEditTime : 2021-07-14 18:59:16
+ * @LastEditTime : 2021-07-14 19:03:46
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\imgSpider.js
@@ -60,7 +60,7 @@ function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2) {
       try{
         imgToWebp(dest)
       }catch(e){
-        console.log('转换失败',dest)
+        console.log('webp转换失败')
       }
     },0)
   });

@@ -33,18 +33,11 @@ const imgSaver = (url) => {
       //说明可以放大
       let newImgUrl = tempUrl.replace("small", "");
       newImgUrl = newImgUrl.slice(0, newImgUrl.length - 14) + ".jpg";
-      imgSpider(newImgUrl);
+      imgSpider(newImgUrl,src);
     }
     return newWebp;
     // 不存在
   }
-  console.log(exist)
-  // if (!exist) {
-  //   console.log('111')
-    
-  // } else {
-
-  // }
 };
 /**
  * @description : 将服务器图片删除
