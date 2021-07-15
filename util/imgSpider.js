@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-13 23:46:18
- * @LastEditTime : 2021-07-14 20:47:10
+ * @LastEditTime : 2021-07-15 14:11:55
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\imgSpider.js
@@ -10,6 +10,7 @@
 const fs = require("fs");
 const http = require("http");
 var webp = require("webp-converter");
+var gm = require('gm');
 // const { url } = require('inspector')
 const userAgent =
   "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36";
@@ -69,9 +70,9 @@ function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2) {
  */
 const imgToWebp = (dest) => {
   console.log(dest);
-  let qulity=80
+  let qulity=90
   if(dest.indexOf('small')!=-1){
-    qulity=30
+    qulity=80
   }
   const result = webp.cwebp(dest, dest + ".webp", "-q "+qulity);
   result.then((response) => {

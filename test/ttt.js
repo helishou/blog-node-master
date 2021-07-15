@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-14 19:47:12
- * @LastEditTime : 2021-07-14 20:52:59
+ * @LastEditTime : 2021-07-15 13:09:31
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\ttt.js
@@ -11,6 +11,7 @@
 // const Article =require("../models/article");
 const imgSpider = require("../util/imgSpider");
 var fs = require("fs");
+var path = require('path')
 var webp = require("webp-converter");
 let src = "D:/desk/sakura/express/";
 // let src = "/www/wwwroot/blog/cloudDisk/";
@@ -35,10 +36,10 @@ const imgSaver = (url) => {
   });
   return "https://www.wangxinyang.xyz/cloudDisk/" + tempUrl + ".webp"
 };
-const value = imgSaver(
-  "http://img.netbian.com/file/2020/1113/small6726872bddca923ccad6f4ec40d3c9f11605282585.jpg"
-);
-console.log(value);
+// const value = imgSaver(
+//   "http://img.netbian.com/file/2020/1113/small6726872bddca923ccad6f4ec40d3c9f11605282585.jpg"
+// );
+// console.log(value);
 const imgToWebp = (dest) => {
   console.log(dest);
   const result = webp.cwebp(dest, dest + ".webp", "-q 80", (logging = "-v"));
@@ -48,3 +49,23 @@ const imgToWebp = (dest) => {
 };
 
 // imgToWebp('/www/wwwroot/blog/cloudDisk/smallf27b49517d6436c5bdc301fd711631e41625305469.jpg');
+
+/**
+ * 缩放图片
+ * @param srcImg    待缩放的图片路径
+ * @param destImg   缩放后的图片输出路径
+ * @param quality   缩放的图片质量，0~100(质量最优)
+ * @param width     缩放后的图片宽度
+ * @param height    缩放后的图片高度
+ * @param imgFormat 缩放后的图片格式
+ */
+function resizeImgWithFullArgs(srcImg, destImg, quality, width, height, imgFormat) {
+  var gm = require('gm');
+  gm(srcImg).resize(width, height).quality(quality).setFormat(imgFormat).write(destImg, function (err) {
+      if (err) {
+          console.log(err);
+      }
+  });
+}
+
+// resizeImgWithFullArgs(__dirname+'./list_09.png',__dirname+'./list_091.jpg',100,500,300,'jpg')
