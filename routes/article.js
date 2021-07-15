@@ -11,7 +11,7 @@ let src = "/www/wwwroot/blog/cloudDisk/";
  * @param        {string} url
  * @return       {string} newWebp
  */
- const imgSaver = (url) => {
+const imgSaver = (url) => {
   let tempUrl = url.split("/");
   tempUrl = tempUrl[tempUrl.length - 1];
   console.log("tempUrl", src + tempUrl);
@@ -28,7 +28,7 @@ let src = "/www/wwwroot/blog/cloudDisk/";
       }
     }
   });
-  return "https://www.wangxinyang.xyz/cloudDisk/" + tempUrl + ".webp"
+  return "https://www.wangxinyang.xyz/cloudDisk/" + tempUrl + ".webp";
 };
 /**
  * @description : 将服务器图片删除
@@ -41,26 +41,28 @@ const imgDelete = (url) => {
   }
   let tempUrl = url.split("/");
   tempUrl = tempUrl[tempUrl.length - 1];
-  try {
-    fs.stat(src + tempUrl);
+  fs.access(src + tempUrl, fs.constants.F_OK, (err) => {
     //如果可以执行到这里那么就表示存在了
-    try {
-      fs.unlink(src + tempUrl);
-      fs.unlink(src + tempUrl.slice(0, tempUrl.length - 5));
-    } catch (e) {}
-    if (tempUrl.indexOf("small") != -1) {
-      //说明可以放大
-      let newImgUrl = tempUrl.replace("small", "");
-      newImgUrl = newImgUrl.slice(0, 32) + ".jpg";
+    if (!err) {
       try {
-        fs.unlink(src + newImgUrl);
-        fs.unlink(src + newImgUrl + ".webp");
-      } catch (e) {}
+        fs.unlink(src + tempUrl);
+        fs.unlink(src + tempUrl.slice(0, tempUrl.length - 5));
+      } catch (e) {
+        return false;
+      }
+      if (tempUrl.indexOf("small") != -1) {
+        //说明可以放大
+        let newImgUrl = tempUrl.replace("small", "");
+        newImgUrl = newImgUrl.slice(0, 32) + ".jpg";
+        try {
+          fs.unlink(src + newImgUrl);
+          fs.unlink(src + newImgUrl + ".webp");
+        } catch (e) {
+          return false;
+        }
+      }
     }
-  } catch (e) {
-    // 不存在
-    console.log(e);
-  }
+  });
 };
 
 exports.addArticle = (req, res) => {
@@ -81,11 +83,7 @@ exports.addArticle = (req, res) => {
     origin,
   } = req.body;
   let { img_url } = req.body;
-  try {
-    img_url = imgSaver(img_url);
-  } catch (e) {
-    console.log("webp转换失败");
-  }
+  img_url = imgSaver(img_url);
   let tempArticle = null;
   if (img_url) {
     tempArticle = new Article({
@@ -135,11 +133,11 @@ exports.addArticle = (req, res) => {
 };
 
 exports.updateArticle = (req, res) => {
-  // if (!req.session.userInfo) {
-  //   console.log(req.session);
-  //   responseClient(res, 200, 1, "您还没登录,或者登录信息已过期，请重新登录！");
-  //   return;
-  // }
+  if (!req.session.userInfo) {
+    console.log(req.session);
+    responseClient(res, 200, 1, "您还没登录,或者登录信息已过期，请重新登录！");
+    return;
+  }
   const {
     title,
     author,
@@ -154,7 +152,7 @@ exports.updateArticle = (req, res) => {
     id,
   } = req.body;
   let { img_url } = req.body;
-  img_url =imgSaver(img_url);
+  img_url = imgSaver(img_url);
   console.log("continue");
   console.log(img_url);
   Article.update(
