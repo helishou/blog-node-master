@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-13 23:46:18
- * @LastEditTime : 2021-07-15 16:15:31
+ * @LastEditTime : 2021-07-15 17:27:22
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\imgSpider.js
@@ -25,7 +25,7 @@ const host = "img.netbian.com";
  * @param {number} timeout - 超时时间，默认 3 分钟
  * @param {number} retries - 重试次数，默认重试 2 次
  */
-function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2) {
+function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2,callback) {
   // imageProcessing
   // .webp()
   // .pipe(someWritableStream);
@@ -37,6 +37,7 @@ function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2) {
   let req = http.request(url, (res) =>
     res.pipe(fs.createWriteStream(dest)).on("finish", ()=> {
       imgToWebp(dest);
+      callback&&callback()
     })
   );
   req.setTimeout(timeout, () => {
