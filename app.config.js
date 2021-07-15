@@ -18,37 +18,16 @@ exports.APP = {
 	FRONT_END_PATH: path.join(__dirname, '..', 'helishou'),
 };
 
-exports.CROSS_DOMAIN = {
-	allowedOrigins: [
-		'http://wangxinyang.xyz/main.html',
-		'http://wangxinyang.xyz',
-		'https://github.com/helishou',
-	],
-	allowedReferer: 'helishou',
-};
-
+exports.STOREDIR={
+	IMAGE:"/www/wwwroot/blog/cloudDisk/"
+}
 exports.MONGODB = {
 	uri: `mongodb://127.0.0.1:${argv.dbport || '27017'}/blogNode`,
 	username: argv.db_username || 'DB_username',
 	password: argv.db_password || 'DB_password',
 };
-exports.AUTH = {
-	data: argv.auth_data || { user: 'root' },
-	jwtTokenSecret: argv.auth_key || 'blog-node',
-	defaultPassword: argv.auth_default_password || 'root',
-};
 
-exports.EMAIL = {
-	account: argv.email_account || 'your email address like : i@helishou',
-	password: argv.email_password || 'your email password',
-	from: 'https://github.com/helishou',
-	admin: 'helishou',
-};
 
-exports.AKISMET = {
-	key: argv.akismet_key || 'your akismet Key',
-	blog: argv.akismet_blog || 'your akismet blog site, like: http://helishou.cn/main.html',
-};
 
 exports.GITHUB = {
 	username: 'helishou',
@@ -65,23 +44,6 @@ exports.GITHUB = {
 //   client_id: "502176cec65773057a9e",
 // 	client_secret: "65d444de381a026301a2c7cffb6952b9a86ac235",
 	
-};
-
-exports.ALIYUN = {
-	ip: argv.aliyun_ip_auth,
-};
-
-exports.BAIDU = {
-	site: argv.baidu_site || 'your baidu site domain like : helishou',
-	token: argv.baidu_token || 'your baidu seo push token',
-};
-
-exports.QINIU = {
-	accessKey: argv.qn_accessKey || 'your access key',
-	secretKey: argv.qn_secretKey || 'your secret key',
-	bucket: argv.qn_bucket || 'your bucket name',
-	origin: argv.qn_origin || 'http://nodepress.u.qiniudn.com',
-	uploadURL: argv.qn_uploadURL || 'http://up.qiniu.com/',
 };
 
 exports.INFO = {

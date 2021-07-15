@@ -1,10 +1,10 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-13 23:46:18
- * @LastEditTime : 2021-07-15 18:32:42
+ * @LastEditTime : 2021-07-15 23:37:51
  * @LastEditors  : helishou
  * @Description  :
- * @FilePath     : \util\imgSpider.js
+ * @FilePath     : f:\桌面\front do\blog-node-master\blog-node-master\util\imgSpider.js
  * 你用你的指尖,阻止我说再见,在bug完全失去之前
  */
 const fs = require("fs");
@@ -12,6 +12,8 @@ const http = require("http");
 var webp = require("webp-converter");
 // var gm = require('gm');
 // const { url } = require('inspector')
+const CONFIG =require('../app.config')
+let src = CONFIG.STOREDIR.IMAGE;
 const userAgent =
   "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36";
 const cookie =
@@ -84,7 +86,67 @@ const imgToWebp = (dest) => {
   });
 };
 
-module.exports = imgSpider;
+//图片目录
+/**
+ * @description : 将网络图片存到服务器
+ * @param        {string} url
+ * @return       {string} newWebp
+ */
+const imgSaver = (url) => {
+  let tempUrl = url.split("/");
+  tempUrl = tempUrl[tempUrl.length - 1];
+  console.log("tempUrl", src + tempUrl);
+  // 检测服务器是否存在这个图片，如果存在返回原来url
+  fs.access(src + tempUrl, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.log("不存在路径", src + tempUrl);
+      imgSpider(url, src); //服务器的保存目录I是大写
+      if (tempUrl.indexOf("small") != -1) {
+        //说明可以放大
+        let newImgUrl = url.replace("small", "");
+        newImgUrl = newImgUrl.slice(0, newImgUrl.length - 14) + ".jpg";
+        imgSpider(newImgUrl, src);
+      }
+    }
+  });
+  return "https://www.wangxinyang.xyz/cloudDisk/" + tempUrl + ".webp";
+};
+/**
+ * @description : 将服务器图片删除
+ * @param        {string} url
+ * @return       {undefined}
+ */
+const imgDelete = (url) => {
+  if (typeof url !== "string") {
+    return;
+  }
+  let tempUrl = url.split("/");
+  tempUrl = tempUrl[tempUrl.length - 1];
+  fs.access(src + tempUrl, fs.constants.F_OK, (err) => {
+    //如果可以执行到这里那么就表示存在了
+    if (!err) {
+      try {
+        fs.unlink(src + tempUrl);
+        fs.unlink(src + tempUrl.slice(0, tempUrl.length - 5));
+      } catch (e) {
+        return false;
+      }
+      if (tempUrl.indexOf("small") != -1) {
+        //说明可以放大
+        let newImgUrl = tempUrl.replace("small", "");
+        newImgUrl = newImgUrl.slice(0, 32) + ".jpg";
+        try {
+          fs.unlink(src + newImgUrl);
+          fs.unlink(src + newImgUrl + ".webp");
+        } catch (e) {
+          return false;
+        }
+      }
+    }
+  });
+};
+
+module.exports = {imgSpider,imgSaver,imgDelete};
 // getCookie(
 //   "http://img.netbian.com/file/2021/0708/small328c217f576e240194847ad9c56e73741625753341.jpg"
 // );

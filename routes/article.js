@@ -1,69 +1,8 @@
 import Article from "../models/article";
 import User from "../models/user";
 import { responseClient, timestampToTime } from "../util/util";
-const imgSpider = require("../util/imgSpider");
+const { imgDelete, imgSaver } = require("../util/imgSpider");
 var fs = require("fs");
-
-let src = "/www/wwwroot/blog/cloudDisk/";
-//图片目录
-/**
- * @description : 将网络图片存到服务器
- * @param        {string} url
- * @return       {string} newWebp
- */
-const imgSaver = (url) => {
-  let tempUrl = url.split("/");
-  tempUrl = tempUrl[tempUrl.length - 1];
-  console.log("tempUrl", src + tempUrl);
-  // 检测服务器是否存在这个图片，如果存在返回原来url
-  fs.access(src + tempUrl, fs.constants.F_OK, (err) => {
-    if (err) {
-      console.log("不存在路径", src + tempUrl);
-      imgSpider(url, src); //服务器的保存目录I是大写
-      if (tempUrl.indexOf("small") != -1) {
-        //说明可以放大
-        let newImgUrl = url.replace("small", "");
-        newImgUrl = newImgUrl.slice(0, newImgUrl.length - 14) + ".jpg";
-        imgSpider(newImgUrl, src);
-      }
-    }
-  });
-  return "https://www.wangxinyang.xyz/cloudDisk/" + tempUrl + ".webp";
-};
-/**
- * @description : 将服务器图片删除
- * @param        {string} url
- * @return       {undefined}
- */
-const imgDelete = (url) => {
-  if (typeof url !== "string") {
-    return;
-  }
-  let tempUrl = url.split("/");
-  tempUrl = tempUrl[tempUrl.length - 1];
-  fs.access(src + tempUrl, fs.constants.F_OK, (err) => {
-    //如果可以执行到这里那么就表示存在了
-    if (!err) {
-      try {
-        fs.unlink(src + tempUrl);
-        fs.unlink(src + tempUrl.slice(0, tempUrl.length - 5));
-      } catch (e) {
-        return false;
-      }
-      if (tempUrl.indexOf("small") != -1) {
-        //说明可以放大
-        let newImgUrl = tempUrl.replace("small", "");
-        newImgUrl = newImgUrl.slice(0, 32) + ".jpg";
-        try {
-          fs.unlink(src + newImgUrl);
-          fs.unlink(src + newImgUrl + ".webp");
-        } catch (e) {
-          return false;
-        }
-      }
-    }
-  });
-};
 
 exports.addArticle = (req, res) => {
   if (!req.session.userInfo) {
@@ -152,7 +91,7 @@ exports.updateArticle = (req, res) => {
     id,
   } = req.body;
   let { img_url } = req.body;
-  if(img_url.indexOf('wangxinyang')==-1){
+  if (img_url.indexOf("wangxinyang") == -1) {
     img_url = imgSaver(img_url);
   }
   console.log("continue");
@@ -302,7 +241,7 @@ exports.getArticleList = (req, res) => {
         sort: { create_time: -1 },
       };
       Article.find(conditions, fields, options, (error, result) => {
-        if (err) {
+        if (error) {
           console.error("Error:" + error);
           // throw error;
         } else {
@@ -390,6 +329,39 @@ exports.getArticleList = (req, res) => {
           // console.log("doc.category:",doc.category);           // undefined
         });
     }
+  });
+};
+
+// 项目列表
+exports.getProjectList = (req, res) => {
+  let type = 2;
+  let conditions = {};
+  //根据 type 返回数据
+  conditions = { $and: [{ type: type }] };
+  // console.log("conditions", conditions);
+  let responseData = {
+    list: [],
+  };
+  // 待返回的字段
+  let fields = {
+    title: 1,
+    desc: 1,
+    img_url: 1,
+  };
+  Article.find(conditions, fields, (error, result) => {
+    if (error) {
+      console.error("Error:" + error);
+      // throw error;
+    } else {
+      let newList = [];
+      responseData.list = result;
+      responseData.realcount = responseData.list.length;
+      responseClient(res, 200, 0, "操作成功！", responseData);
+    }
+  }).exec((err, doc) => {
+    // console.log("doc:");          // aikin
+    // console.log("doc.tags:",doc.tags);          // aikin
+    // console.log("doc.category:",doc.category);           // undefined
   });
 };
 

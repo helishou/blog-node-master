@@ -1,10 +1,10 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-05-26 19:46:35
- * @LastEditTime : 2021-07-15 12:30:09
+ * @LastEditTime : 2021-07-15 23:39:40
  * @LastEditors  : helishou
  * @Description  : 所有的路由接口主文件
- * @FilePath     : \routes\index.js
+ * @FilePath     : f:\桌面\front do\blog-node-master\blog-node-master\routes\index.js
  * 你用你的指尖,阻止我说再见,在bug完全失去之前
  */
 
@@ -41,6 +41,7 @@ module.exports = app => {
 	app.post('/updateArticle', article.updateArticle);
 	app.post('/delArticle', article.delArticle);
 	app.get('/getArticleList', article.getArticleList);
+	app.get('/getProjectList', article.getProjectList);
 	app.get('/getArticleListAdmin', article.getArticleListAdmin);
 	app.post('/getArticleDetail', article.getArticleDetail);
 	app.post('/likeArticle', article.likeArticle);
