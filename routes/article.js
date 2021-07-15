@@ -347,6 +347,7 @@ exports.getProjectList = (req, res) => {
     title: 1,
     desc: 1,
     img_url: 1,
+    type:1
   };
   Article.find(conditions, fields, (error, result) => {
     if (error) {

@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-05-26 19:46:35
- * @LastEditTime : 2021-07-15 23:39:40
+ * @LastEditTime : 2021-07-16 00:30:32
  * @LastEditors  : helishou
  * @Description  : 所有的路由接口主文件
  * @FilePath     : f:\桌面\front do\blog-node-master\blog-node-master\routes\index.js
@@ -15,8 +15,8 @@ const message = require('./message');
 const tag = require('./tag');
 const link = require('./link');
 const category = require('./category');
-const project = require('./project');
-const transmit = require('./transmit')
+// const project = require('./project');
+// const transmit = require('./transmit')
 // const ssr = require('./ssr')
 // const head = require('./header')
 module.exports = app => {
@@ -65,11 +65,11 @@ module.exports = app => {
 	app.post('/delCategory', category.delCategory);
 	app.get('/getCategoryList', category.getCategoryList);
 
-	app.post('/addProject', project.addProject);
-	app.post('/updateProject', project.updateProject);
-	app.post('/delProject', project.delProject);
-	app.get('/getProjectList', project.getProjectList);
-	app.post('/getProjectDetail', project.getProjectDetail);
+	// app.post('/addProject', project.addProject);
+	// app.post('/updateProject', project.updateProject);
+	// app.post('/delProject', project.delProject);
+	// app.get('/getProjectList', project.getProjectList);
+	// app.post('/getProjectDetail', project.getProjectDetail);
 
 	// app.get('/getMusic',transmit.getMusic)
 };
