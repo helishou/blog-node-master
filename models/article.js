@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-05-26 19:50:12
- * @LastEditTime : 2021-07-14 15:25:30
+ * @LastEditTime : 2021-07-15 13:13:22
  * @LastEditors  : helishou
  * @Description  : 文章数据模型
  * @FilePath     : \models\article.js
@@ -33,6 +33,12 @@ const articleSchema = new mongoose.Schema({
 
   // 封面图
   img_url: {
+    type: String,
+    default:
+      "",
+  },
+  // 原始的url
+  oringin_url: {
     type: String,
     default:
       "",
