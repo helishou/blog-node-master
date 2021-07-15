@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-13 23:46:18
- * @LastEditTime : 2021-07-15 17:27:22
+ * @LastEditTime : 2021-07-15 18:27:37
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\imgSpider.js
@@ -26,6 +26,9 @@ const host = "img.netbian.com";
  * @param {number} retries - 重试次数，默认重试 2 次
  */
 function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2,callback) {
+  if(url.indexOf('wangxinyang')!==-1){
+    return url
+  }
   // imageProcessing
   // .webp()
   // .pipe(someWritableStream);
