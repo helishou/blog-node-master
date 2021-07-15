@@ -152,7 +152,9 @@ exports.updateArticle = (req, res) => {
     id,
   } = req.body;
   let { img_url } = req.body;
-  img_url = imgSaver(img_url);
+  if(img_url.indexOf('wangxinyang')==-1){
+    img_url = imgSaver(img_url);
+  }
   console.log("continue");
   console.log(img_url);
   Article.update(
