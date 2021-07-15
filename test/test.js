@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-14 14:50:50
- * @LastEditTime : 2021-07-15 14:08:54
+ * @LastEditTime : 2021-07-15 16:17:01
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \test\test.js
@@ -34,24 +34,24 @@ updateArticle = () => {
             newImgUrl = result[i].img_url.replace("small", "");
             newImgUrl = newImgUrl.slice(0, newImgUrl.length - 14) + ".jpg";
             console.log("可以放大", newImgUrl);
-            let newUrl = imgSpider(result[i].img_url);
-            Article.findOneAndUpdate(
-              { img_url: result[i].img_url },
-              { img_url: newUrl },
-              (err, res) => {
-                console.log(result[i].img_url, "成功");
-              }
-            );
-            imgSpider(newImgUrl);
+            let newUrl = imgSpider(result[i].img_url,__dirname+'/img/');
+            // Article.findOneAndUpdate(
+            //   { img_url: result[i].img_url },
+            //   { img_url: newUrl },
+            //   (err, res) => {
+            //     console.log(result[i].img_url, "成功");
+            //   }
+            // );
+            imgSpider(newImgUrl,__dirname+'/img/');
           } else {
-            let newUrl =imgSpider(result[i].img_url);
-            Article.findOneAndUpdate(
-              { img_url: result[i].img_url },
-              { img_url: newUrl },
-              (err, res) => {
-                console.log(result[i].img_url, "成功");
-              }
-            );
+            let newUrl =imgSpider(result[i].img_url,__dirname+'/img/');
+            // Article.findOneAndUpdate(
+            //   { img_url: result[i].img_url },
+            //   { img_url: newUrl },
+            //   (err, res) => {
+            //     console.log(result[i].img_url, "成功");
+            //   }
+            // );
             console.log("不可放大", result[i].img_url);
           }
         }

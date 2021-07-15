@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-13 23:46:18
- * @LastEditTime : 2021-07-15 14:11:55
+ * @LastEditTime : 2021-07-15 18:27:37
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\imgSpider.js
@@ -25,7 +25,10 @@ const host = "img.netbian.com";
  * @param {number} timeout - 超时时间，默认 3 分钟
  * @param {number} retries - 重试次数，默认重试 2 次
  */
-function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2) {
+function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2,callback) {
+  if(url.indexOf('wangxinyang')!==-1){
+    return url
+  }
   // imageProcessing
   // .webp()
   // .pipe(someWritableStream);
@@ -37,6 +40,7 @@ function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2) {
   let req = http.request(url, (res) =>
     res.pipe(fs.createWriteStream(dest)).on("finish", ()=> {
       imgToWebp(dest);
+      callback&&callback()
     })
   );
   req.setTimeout(timeout, () => {
@@ -70,9 +74,9 @@ function imgSpider(url, dest = "", timeout = 1000 * 3 * 60, retries = 2) {
  */
 const imgToWebp = (dest) => {
   console.log(dest);
-  let qulity=90
+  let qulity=100
   if(dest.indexOf('small')!=-1){
-    qulity=80
+    qulity=95
   }
   const result = webp.cwebp(dest, dest + ".webp", "-q "+qulity);
   result.then((response) => {
