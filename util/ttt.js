@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-14 19:47:12
- * @LastEditTime : 2021-07-14 20:52:59
+ * @LastEditTime : 2021-07-15 12:12:18
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\ttt.js
@@ -35,10 +35,10 @@ const imgSaver = (url) => {
   });
   return "https://www.wangxinyang.xyz/cloudDisk/" + tempUrl + ".webp"
 };
-const value = imgSaver(
-  "http://img.netbian.com/file/2020/1113/small6726872bddca923ccad6f4ec40d3c9f11605282585.jpg"
-);
-console.log(value);
+// const value = imgSaver(
+//   "http://img.netbian.com/file/2020/1113/small6726872bddca923ccad6f4ec40d3c9f11605282585.jpg"
+// );
+// console.log(value);
 const imgToWebp = (dest) => {
   console.log(dest);
   const result = webp.cwebp(dest, dest + ".webp", "-q 80", (logging = "-v"));
@@ -48,3 +48,10 @@ const imgToWebp = (dest) => {
 };
 
 // imgToWebp('/www/wwwroot/blog/cloudDisk/smallf27b49517d6436c5bdc301fd711631e41625305469.jpg');
+
+var gm = require('gm');
+gm('./list_09.png')
+    .resize(50, 50,"!")
+    .write('./list_09.png', function (err) {
+        if (!err) console.log('done');
+    });

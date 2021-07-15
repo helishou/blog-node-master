@@ -1,10 +1,10 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-05-26 19:46:35
- * @LastEditTime : 2021-06-15 18:57:36
+ * @LastEditTime : 2021-07-15 12:30:09
  * @LastEditors  : helishou
  * @Description  : 所有的路由接口主文件
- * @FilePath     : d:\desk\sakura\express\routes\index.js
+ * @FilePath     : \routes\index.js
  * 你用你的指尖,阻止我说再见,在bug完全失去之前
  */
 
@@ -17,8 +17,10 @@ const link = require('./link');
 const category = require('./category');
 const project = require('./project');
 const transmit = require('./transmit')
+// const ssr = require('./ssr')
 // const head = require('./header')
 module.exports = app => {
+	// app.get('/',usr.login)
 	app.post('/login', user.login);
 	app.post('/logout', user.logout);
 	app.post('/loginAdmin', user.loginAdmin);
@@ -27,7 +29,6 @@ module.exports = app => {
 	app.post('/getUser', user.getUser);
 	app.get('/currentUser', user.currentUser);
 	app.get('/getUserList', user.getUserList);
-	
     // app.post('/menu/front/v1/list', user.login);
     
 	app.post('/addComment', comment.addComment);

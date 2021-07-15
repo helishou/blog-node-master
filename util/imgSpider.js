@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-13 23:46:18
- * @LastEditTime : 2021-07-14 20:47:10
+ * @LastEditTime : 2021-07-15 11:23:17
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : \util\imgSpider.js
@@ -10,6 +10,7 @@
 const fs = require("fs");
 const http = require("http");
 var webp = require("webp-converter");
+var gm = require('gm');
 // const { url } = require('inspector')
 const userAgent =
   "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36";
