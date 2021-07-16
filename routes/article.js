@@ -158,7 +158,7 @@ exports.delArticle = (req, res) => {
 exports.getArticleList = (req, res) => {
   let keyword = req.query.keyword || null;
   let state = req.query.state || "";
-  let type = req.query.type || 1;
+  let type = req.query.type || "";
   let likes = req.query.likes || "";
   let origin = req.query.origin || null;
   let tag_id = req.query.tag_id || "";
@@ -206,7 +206,9 @@ exports.getArticleList = (req, res) => {
     conditions = { $and: [{ category: category_id }, conditions] };
   }
   //根据 type 返回数据
-  conditions = { $and: [{ type: type }, conditions] };
+  if(type){
+    conditions = { $and: [{ type: type }, conditions] };
+  }
   // console.log("conditions", conditions);
   let skip = pageNum - 1 < 0 ? 0 : (pageNum - 1) * pageSize;
   let responseData = {
