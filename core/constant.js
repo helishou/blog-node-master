@@ -1,3 +1,12 @@
+/*
+ * @Author       : helishou
+ * @Date         : 2021-05-23 16:04:56
+ * @LastEditTime : 2021-07-16 21:42:05
+ * @LastEditors  : helishou
+ * @Description  : 
+ * @FilePath     : f:\桌面\front do\blog-node-master\blog-node-master\core\constant.js
+ * 你用你的指尖,阻止我说再见,在bug完全失去之前
+ */
 /**
  * Constants module.
  * @file 数据表常量模块
