@@ -16,7 +16,8 @@ const session = require('express-session');
 require('babel-register');
 
 const app = express();
-
+//服务器响应头隐藏
+app.disable('x-powered-by');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
