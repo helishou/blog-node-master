@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-13 23:46:18
- * @LastEditTime : 2021-07-15 23:37:51
+ * @LastEditTime : 2021-08-18 10:53:49
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : f:\桌面\front do\blog-node-master\blog-node-master\util\imgSpider.js
@@ -151,3 +151,4 @@ module.exports = {imgSpider,imgSaver,imgDelete};
 //   "http://img.netbian.com/file/2021/0708/small328c217f576e240194847ad9c56e73741625753341.jpg"
 // );
 // request('http://img.netbian.com/file/2021/0708/small328c217f576e240194847ad9c56e73741625753341.jpg').pipe(fs.createWriteStream('doodle.jpg'))
+// imgToWebp('F:/图片/壁纸/70150501_p0.jpg')
