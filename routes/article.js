@@ -23,6 +23,7 @@ exports.addArticle = (req, res) => {
   } = req.body;
   let { img_url } = req.body;
   img_url = imgSaver(img_url);
+  console.log(img_url)
   let tempArticle = null;
   if (img_url) {
     tempArticle = new Article({
