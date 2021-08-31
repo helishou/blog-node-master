@@ -1,7 +1,7 @@
 /*
  * @Author       : helishou
  * @Date         : 2021-07-13 23:46:18
- * @LastEditTime : 2021-08-18 10:53:49
+ * @LastEditTime : 2021-08-31 22:50:50
  * @LastEditors  : helishou
  * @Description  :
  * @FilePath     : f:\桌面\front do\blog-node-master\blog-node-master\util\imgSpider.js
@@ -93,6 +93,7 @@ const imgToWebp = (dest) => {
  * @return       {string} newWebp
  */
 const imgSaver = (url) => {
+  if(!url.indexOf('netbian')) return url
   let tempUrl = url.split("/");
   tempUrl = tempUrl[tempUrl.length - 1];
   console.log("tempUrl", src + tempUrl);
