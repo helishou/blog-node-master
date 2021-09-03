@@ -171,6 +171,10 @@ exports.getArticleList = (req, res) => {
   if (article) {
     pageSize = 1000;
   }
+  if(keyword.indexOf('面经')!=-1){
+    keyword='面经'
+    type=''
+  }
   let conditions = {};
   let stateCondition = {};
   if (!state) {
