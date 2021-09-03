@@ -173,7 +173,7 @@ exports.getArticleList = (req, res) => {
   }
   if(keyword.indexOf('面经')!=-1){
     keyword='面经'
-    type=''
+    state=''
   }
   let conditions = {};
   let stateCondition = {};
