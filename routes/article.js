@@ -23,7 +23,7 @@ exports.addArticle = (req, res) => {
   } = req.body;
   let { img_url } = req.body;
   img_url = imgSaver(img_url);
-  console.log(img_url)
+  console.log(img_url);
   let tempArticle = null;
   if (img_url) {
     tempArticle = new Article({
@@ -157,7 +157,7 @@ exports.delArticle = (req, res) => {
 
 // 前台文章列表
 exports.getArticleList = (req, res) => {
-  let keyword = req.query.keyword || null;
+  let keyword = req.query.keyword || "";
   let state = req.query.state || "";
   let type = req.query.type || "";
   let likes = req.query.likes || "";
@@ -171,9 +171,9 @@ exports.getArticleList = (req, res) => {
   if (article) {
     pageSize = 1000;
   }
-  if(keyword.indexOf('面经')!=-1){
-    keyword='面经'
-    state=''
+  if (keyword.indexOf("面经") != -1) {
+    keyword = "面经";
+    state = "";
   }
   let conditions = {};
   let stateCondition = {};
@@ -211,7 +211,7 @@ exports.getArticleList = (req, res) => {
     conditions = { $and: [{ category: category_id }, conditions] };
   }
   //根据 type 返回数据
-  if(type){
+  if (type) {
     conditions = { $and: [{ type: type }, conditions] };
   }
   // console.log("conditions", conditions);
@@ -354,7 +354,7 @@ exports.getProjectList = (req, res) => {
     title: 1,
     desc: 1,
     img_url: 1,
-    type:1
+    type: 1,
   };
   Article.find(conditions, fields, (error, result) => {
     if (error) {
